@@ -12,12 +12,17 @@ const Forside = () => (
       <br />
       <Nav.Row className="">
         <Nav.Column xs="3">
-          <Nav.Lenkepanel href="/opprett">Opprett sak</Nav.Lenkepanel>
+          <Nav.Lenkepanel href="/opprett">Opprett Sak</Nav.Lenkepanel>
         </Nav.Column>
       </Nav.Row>
       <Nav.Row className="">
         <Nav.Column xs="3">
           <Nav.Lenkepanel href="/vedlegg">Legg ved vedlegg til SED</Nav.Lenkepanel>
+        </Nav.Column>
+      </Nav.Row>
+      <Nav.Row className="">
+        <Nav.Column xs="3">
+          <Nav.Lenkepanel href="/sed">Opprett SED</Nav.Lenkepanel>
         </Nav.Column>
       </Nav.Row>
     </Nav.Container>

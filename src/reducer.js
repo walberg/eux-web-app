@@ -7,6 +7,7 @@ import fagsakReducers from './ducks/fagsak';
 import kodeverkReducers from './ducks/kodeverk';
 import landkoderReducers from './ducks/landkoder';
 import personReducers from './ducks/person';
+import rinasedReducers from './ducks/rinased';
 import rinasakReducers from './ducks/rinasak';
 import rinavedleggReducers from './ducks/rinavedlegg';
 import saksbehandlerReducers from './ducks/saksbehandler';
@@ -20,6 +21,7 @@ export default combineReducers({
   landkoder: landkoderReducers,
   person: personReducers,
   rina: combineReducers({
+    sed: rinasedReducers,
     sak: rinasakReducers,
     vedlegg: rinavedleggReducers,
   }),
