@@ -41,7 +41,7 @@ export const Fagsaker = props => {
           </Nav.Column>
           :
           <Nav.Row>
-            <Nav.Column xs="6">
+            <Nav.Column xs="3">
               <Nav.AlertStripe type="info">Ingen saker funnet</Nav.AlertStripe>
             </Nav.Column>
           </Nav.Row>
