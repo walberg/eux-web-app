@@ -72,11 +72,11 @@ class OpprettSak extends Component {
     const saksID = event.target.value;
     this.setState({ saksID });
   };
-  visFagsaker = async () => {
+  hentFagsaker = async () => {
     const { tema } = this.state;
     const { inntastetFnr: fnr, valgtSektor } = this.props;
     const fagsaker = await Api.Fagsaker.hent(fnr, valgtSektor, tema);
-    this.setState({ tema, fagsaker, soktEtterSaker: true });
+    this.setState({ fagsaker, soktEtterSaker: true });
   };
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
@@ -191,7 +191,7 @@ class OpprettSak extends Component {
                   <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
                 </Nav.Column>
                 <Nav.Column xs="2">
-                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
+                  <Nav.Knapp style={btnStyle} onClick={this.hentFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
                 </Nav.Column>
               </Nav.Row>
             )}
