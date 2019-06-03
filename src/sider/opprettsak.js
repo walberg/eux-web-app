@@ -32,14 +32,12 @@ class OpprettSak extends Component {
     institusjonsID: '',
     institusjoner: [],
     tema: '',
-    fagsaker: {
-      saker: [],
-      soktEtterSaker: false,
-    },
+    fagsaker: [],
+    soktEtterSaker: false,
     saksID: '',
   };
 
-  visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.soktEtterSaker);
+  visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.soktEtterSaker);
   visArbeidsforhold = () => {
     const { valgtSektor, buctype, sedtype } = this.props;
     return ['FB'].includes(valgtSektor) && ['FB_BUC_01'].includes(buctype) && sedtype;
@@ -67,7 +65,7 @@ class OpprettSak extends Component {
 
   oppdaterTemaListe = event => {
     const tema = event.target.value;
-    this.setState({ tema, fagsaker: { saker: [], soktEtterSaker: false } });
+    this.setState({ tema, fagsaker: [], soktEtterSaker: false });
   };
 
   oppdaterFagsakListe = event => {
@@ -78,7 +76,7 @@ class OpprettSak extends Component {
     const { tema } = this.state;
     const { inntastetFnr: fnr, valgtSektor } = this.props;
     const fagsaker = await Api.Fagsaker.hent(fnr, valgtSektor, tema);
-    this.setState({ tema, fagsaker: { saker: fagsaker, soktEtterSaker: true } });
+    this.setState({ tema, fagsaker, soktEtterSaker: true });
   };
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
@@ -198,7 +196,7 @@ class OpprettSak extends Component {
               </Nav.Row>
             )}
             {this.visFagsakerListe() &&
-              <Fagsaker fagsaker={this.state.fagsaker.saker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+              <Fagsaker fagsaker={this.state.fagsaker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
             }
             {this.visArbeidsforhold() &&
               <ArbeidsforholdController fnr={inntastetFnr} />
