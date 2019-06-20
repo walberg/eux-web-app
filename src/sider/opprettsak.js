@@ -16,6 +16,8 @@ import { ServerinfoSelectors } from '../ducks/serverinfo';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import PersonSok from './personsok';
+import Fagomrade from '../komponenter/Fagomrade';
+
 
 import './opprettsak.css';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
@@ -149,6 +151,7 @@ class OpprettSak extends Component {
                 />
               </Nav.Column>
             </Nav.Row>
+            <Fagomrade />
             <Nav.Row className="">
               <Nav.Column xs="3">
                 <Skjema.Select id="id-sektor" feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
@@ -341,6 +344,6 @@ const validering = values => {
 // mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
-  onSubmit: () => {},
+  onSubmit: () => { },
   validate: validering,
 })(OpprettSak));
