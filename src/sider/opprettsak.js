@@ -85,8 +85,11 @@ class OpprettSak extends Component {
 
     if (submitFailed) return;
 
+    // const vaskedeVerdier = {
+    //   ...values, institusjonsID, landKode, saksID,
+    // };
     const vaskedeVerdier = {
-      ...values, institusjonsID, landKode, saksID,
+      ...values, saksID,
     };
     delete vaskedeVerdier.fnrErGyldig;
     delete vaskedeVerdier.fnrErSjekket;
