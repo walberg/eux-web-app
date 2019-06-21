@@ -23,7 +23,7 @@ class Fagomrade extends Component {
     const { nullstillSkjemaFelter, settSektor } = this.props;
     const sektor = event.target.value;
     settSektor(sektor);
-    nullstillSkjemaFelter(['buctype', 'sedtype', 'landkode', 'institusjoner']);
+    nullstillSkjemaFelter(['buctype', 'sedtype', 'landKode', 'institusjonsID']);
   }
 
   /**
@@ -37,18 +37,18 @@ class Fagomrade extends Component {
   };
 
   /**
-   * Institusjoner er avhengig av valgt landkode og buctype, derfor må disse hentes her
+   * Institusjoner er avhengig av valgt landKode og buctype, derfor må disse hentes her
    */
   oppdaterLandKode = async event => {
     const { settLandkode, buctype, hentInstitusjoner } = this.props;
-    const landkode = event.target.value;
-    await settLandkode(landkode);
-    await hentInstitusjoner(buctype, landkode);
+    const landKode = event.target.value;
+    await settLandkode(landKode);
+    await hentInstitusjoner(buctype, landKode);
   };
 
   render() {
     const {
-      sektor, fnrErGyldig, fnrErSjekket, buctyper, sedtyper, landkoder, institusjoner, valgtSektor, buctype, sedtype, landkode,
+      sektor, fnrErGyldig, fnrErSjekket, buctyper, sedtyper, landkoder, institusjoner, valgtSektor, buctype, sedtype, landKode,
     } = this.props;
     const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
     return (
@@ -74,12 +74,12 @@ class Fagomrade extends Component {
         </Nav.Row>
         <Nav.Row className="">
           <Nav.Column xs="3">
-            <Skjema.Select id="id-landkode" feltNavn="landKode" label="Land" bredde="xxl" disabled={!sedtype} onChange={this.oppdaterLandKode}>
+            <Skjema.Select id="id-landKode" feltNavn="landKode" label="Land" bredde="xxl" disabled={!sedtype} onChange={this.oppdaterLandKode}>
               {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
             </Skjema.Select>
           </Nav.Column>
           <Nav.Column xs="3">
-            <Skjema.Select id="id-institusjonsID" feltNavn="institusjonsID" bredde="xxl" disabled={!landkode} label="Mottaker institusjon">
+            <Skjema.Select id="id-institusjonsID" feltNavn="institusjonsID" bredde="xxl" disabled={!landKode} label="Mottaker institusjon">
               {institusjoner && institusjoner.map(element => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
             </Skjema.Select>
           </Nav.Column>
@@ -105,7 +105,7 @@ Fagomrade.propTypes = {
   fnrErSjekket: PT.bool,
   valgtSektor: PT.string,
   buctype: PT.string,
-  landkode: PT.string,
+  landKode: PT.string,
   sedtype: PT.string,
 };
 
@@ -114,7 +114,7 @@ Fagomrade.defaultProps = {
   buctype: undefined,
   sedtype: undefined,
   landkoder: undefined,
-  landkode: undefined,
+  landKode: undefined,
   sektor: undefined,
   fnrErGyldig: undefined,
   fnrErSjekket: undefined,
@@ -135,16 +135,16 @@ const mapStateToProps = state => ({
   valgtSektor: skjemaSelector(state, 'sektor'),
   sedtype: skjemaSelector(state, 'sedtype'),
   buctype: skjemaSelector(state, 'buctype'),
-  landkode: skjemaSelector(state, 'landKode'),
+  landKode: skjemaSelector(state, 'landKode'),
   buctyper: RinasakSelectors.buctyperSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   settSektor: sektor => dispatch(change('opprettSak', 'sektor', sektor)),
   settBuctype: buctype => dispatch(change('opprettSak', 'buctype', buctype)),
-  settLandkode: landkode => dispatch(change('opprettSak', 'landKode', landkode)),
+  settLandkode: landKode => dispatch(change('opprettSak', 'landKode', landKode)),
   hentLandkoder: buctype => dispatch(LandkoderOperations.hent(buctype)),
-  hentInstitusjoner: (buctype, landkode) => dispatch(InstitusjonerOperations.hent(buctype, landkode)),
+  hentInstitusjoner: (buctype, landKode) => dispatch(InstitusjonerOperations.hent(buctype, landKode)),
   nullstillSkjemaFelter: felter => dispatch(clearFields('opprettSak', false, false, ...felter)),
 });
 
