@@ -96,7 +96,9 @@ class OpprettSak extends Component {
       serverInfo, temar, inntastetFnr, status, errdata, valgtSektor, settFnrSjekket, settFnrGyldighet, opprettetSak,
     } = this.props;
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
+    const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
     const { resettSokStatus } = this;
+
     return (
       <div className="opprettsak">
         <Nav.Systemtittel>Opprett Sak</Nav.Systemtittel>
@@ -149,7 +151,7 @@ class OpprettSak extends Component {
             </Nav.Row>
             <Nav.Row>
               <Nav.Column xs="6">
-                <StatusLinje status={status} url={responsLenke} tittel={`Saksnummer: ${rinasaksnummer}`} />
+                <StatusLinje status={status} tittel={`Saksnummer: ${rinasaksnummer}`} rinaURL={responsLenke} routePath={vedleggRoute} />
                 {errdata && errdata.status && <p>{errdata.message}</p>}
               </Nav.Column>
             </Nav.Row>
