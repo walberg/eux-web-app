@@ -19,6 +19,7 @@ import Fagomrade from '../komponenter/Fagomrade';
 
 import './opprettsak.css';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
+import { PersonSelectors } from '../ducks/person';
 
 const btnStyle = {
   margin: '1.85em 0 0 0',
@@ -50,7 +51,7 @@ class OpprettSak extends Component {
 
   visFagsaker = async () => {
     const { tema } = this.state;
-    const { inntastetFnr: fnr, valgtSektor } = this.props;
+    const { fnr, valgtSektor } = this.props;
     const fagsaker = await Api.Fagsaker.hent(fnr, valgtSektor, tema);
     this.setState({ tema, fagsaker });
   };
@@ -185,6 +186,7 @@ OpprettSak.propTypes = {
     rinasaksnummer: PT.string,
     url: PT.string,
   }),
+  fnr: PT.string,
 };
 
 OpprettSak.defaultProps = {
@@ -200,6 +202,7 @@ OpprettSak.defaultProps = {
   errdata: {},
   valgteFamilieRelasjoner: [],
   opprettetSak: {},
+  fnr: '',
 };
 
 const skjemaSelector = formValueSelector('opprettSak');
@@ -226,6 +229,7 @@ const mapStateToProps = state => ({
   errdata: RinasakSelectors.errorDataSakSelector(state),
   opprettetSak: RinasakSelectors.sakSelector(state),
   fagsaker: FagsakSelectors.fagsakerSelector(state),
+  fnr: PersonSelectors.fnrSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
