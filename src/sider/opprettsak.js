@@ -246,7 +246,7 @@ const validering = values => {
   const sektor = !values.sektor ? 'Du må velge sektor.' : null;
   const buctype = !values.buctype ? 'Du må velge buctype.' : null;
   const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
-  const land = !values.land ? 'Du må velge land.' : null;
+  const landKode = !values.landKode ? 'Du må velge land.' : null;
   const institusjonsID = !values.institusjonsID ? 'Du må velge institusjon.' : null;
 
   return {
@@ -254,7 +254,7 @@ const validering = values => {
     sektor,
     buctype,
     sedtype,
-    land,
+    landKode,
     institusjonsID,
   };
 };
