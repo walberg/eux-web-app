@@ -88,9 +88,12 @@ class PersonSok extends Component {
           {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
         </div>
-        {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
-        {errdata.status && <p>{errdata.message}</p>}
-        {personKort}
+        <Nav.Column xs="6">
+          {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
+          {errdata.status && <p>{errdata.message}</p>}
+          {personKort}
+        </Nav.Column>
+
       </div>
     );
   }
