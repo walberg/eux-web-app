@@ -17,9 +17,11 @@ import PersonSok from './personsok';
 import Fagomrade from '../komponenter/Fagomrade';
 
 
+
 import './opprettsak.css';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
 import { PersonSelectors } from '../ducks/person';
+import AvsluttModal from '../komponenter/AvsluttModal';
 
 const btnStyle = {
   margin: '1.85em 0 0 0',
@@ -31,6 +33,7 @@ class OpprettSak extends Component {
     fagsaker: [],
     soktEtterSaker: false,
     saksID: '',
+    visModal: false,
   };
 
   visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.soktEtterSaker);
@@ -91,13 +94,24 @@ class OpprettSak extends Component {
     settFnrSjekket(false);
   };
 
+  openModal = () => {
+    this.setState({ visModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ visModal: false });
+  };
+
   render() {
     const {
       serverInfo, temar, inntastetFnr, status, errdata, valgtSektor, settFnrSjekket, settFnrGyldighet, opprettetSak,
     } = this.props;
+
+    const { visModal } = this.state;
+
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
     const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
-    const { resettSokStatus } = this;
+    const { resettSokStatus, openModal, closeModal } = this;
 
     return (
       <div className="opprettsak">
@@ -143,10 +157,14 @@ class OpprettSak extends Component {
               <Nav.Column xs="3">
                 <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
               </Nav.Column>
-              <Nav.Column xs="2">
-                <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
-                  AVSLUTT
-                </Nav.Lenke>
+              <AvsluttModal
+                visModal={visModal}
+                closeModal={closeModal}
+              />
+              <Nav.Column xs="3">
+                <Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
+                  AVSLUTT UTFYLLING
+                </Nav.Flatknapp>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
