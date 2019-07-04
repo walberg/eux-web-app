@@ -20,3 +20,10 @@ export function hentPerson(fnr) {
   });
 }
 
+export function slettPerson() {
+  return {
+    type: Types.OK,
+    data: {},
+  };
+}
+

@@ -34,3 +34,11 @@ export const valgtSedtypeSelector = createSelector(
     return values.sedtype;
   }
 );
+
+export const valgtLandkodeSelector = createSelector(
+  state => OpprettSakFormSelector(state),
+  opprettSakForm => {
+    const { values = {} } = opprettSakForm;
+    return values.landkode;
+  }
+);

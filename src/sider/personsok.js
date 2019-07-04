@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { reset } from 'redux-form';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
@@ -52,8 +53,12 @@ class PersonSok extends Component {
 
   sokEtterPerson = () => {
     const {
-      inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok,
+      inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok, nullstillSkjema, slettPerson,
     } = this.props;
+    // Nullstill hele skjema under søk, uansett resultat eller ikke
+    nullstillSkjema();
+    // Fjern person fra store
+    slettPerson();
     if (inntastetFnr.length === 0) return;
     personSok(inntastetFnr).then(response => {
       if (response && response.data) {
@@ -92,7 +97,9 @@ class PersonSok extends Component {
 }
 
 PersonSok.propTypes = {
+  nullstillSkjema: PT.func.isRequired,
   personSok: PT.func.isRequired,
+  slettPerson: PT.func.isRequired,
   person: MPT.Person,
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
@@ -115,6 +122,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),
+  slettPerson: () => dispatch(PersonOperations.slettPerson()),
+  nullstillSkjema: () => dispatch(reset('opprettSak')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonSok);

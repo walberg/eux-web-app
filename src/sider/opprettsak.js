@@ -6,21 +6,20 @@ import PT from 'prop-types';
 import * as Api from '../services/api';
 import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
-import * as Skjema from '../felles-komponenter/skjema';
 
 import { FagsakSelectors } from '../ducks/fagsak';
 import { KodeverkSelectors } from '../ducks/kodeverk';
-import { LandkoderOperations, LandkoderSelectors } from '../ducks/landkoder';
 import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
 import { ServerinfoSelectors } from '../ducks/serverinfo';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import PersonSok from './personsok';
+import Fagomrade from '../komponenter/Fagomrade';
+
 
 import './opprettsak.css';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
-
-const uuid = require('uuid/v4');
+import { PersonSelectors } from '../ducks/person';
 
 const btnStyle = {
   margin: '1.85em 0 0 0',
@@ -28,9 +27,6 @@ const btnStyle = {
 
 class OpprettSak extends Component {
   state = {
-    landKode: '',
-    institusjonsID: '',
-    institusjoner: [],
     tema: '',
     fagsaker: [],
     soktEtterSaker: false,
@@ -41,26 +37,6 @@ class OpprettSak extends Component {
   visArbeidsforhold = () => {
     const { valgtSektor, buctype, sedtype } = this.props;
     return ['FB'].includes(valgtSektor) && ['FB_BUC_01'].includes(buctype) && sedtype;
-  };
-  oppdaterBucKode = async event => {
-    const { settBuctype, hentLandkoder } = this.props;
-    const buctype = event.target.value;
-    await settBuctype(buctype);
-    await hentLandkoder(buctype);
-    this.setState({ landKode: '' });
-  };
-  oppdaterLandKode = event => {
-    const landKode = event.target.value;
-    const { buctype } = this.props;
-    Api.Institusjoner.hent(buctype, landKode).then(institusjoner => {
-      this.setState({ landKode, institusjoner });
-    });
-  };
-
-  oppdaterInstitusjonKode = event => {
-    const institusjonsID = event.target.value;
-    const { institusjoner } = this.state;
-    this.setState({ institusjonsID, institusjoner });
   };
 
   oppdaterTemaListe = event => {
@@ -74,18 +50,19 @@ class OpprettSak extends Component {
   };
   hentFagsaker = async () => {
     const { tema } = this.state;
-    const { inntastetFnr: fnr, valgtSektor } = this.props;
+    const { fnr, valgtSektor } = this.props;
     const fagsaker = await Api.Fagsaker.hent(fnr, valgtSektor, tema);
     this.setState({ fagsaker, soktEtterSaker: true });
   };
+
   skjemaSubmit = values => {
     const { submitFailed, sendSkjema } = this.props;
-    const { institusjonsID, landKode, saksID } = this.state;
+    const { saksID } = this.state;
 
     if (submitFailed) return;
 
     const vaskedeVerdier = {
-      ...values, institusjonsID, landKode, saksID,
+      ...values, saksID,
     };
     delete vaskedeVerdier.fnrErGyldig;
     delete vaskedeVerdier.fnrErSjekket;
@@ -108,8 +85,6 @@ class OpprettSak extends Component {
     }
   };
 
-  erSedtyperGyldig = sedtyper => sedtyper && sedtyper.length > 0 && sedtyper[0];
-
   resettSokStatus = () => {
     const { settFnrGyldighet, settFnrSjekket } = this.props;
     settFnrGyldighet(null);
@@ -118,22 +93,12 @@ class OpprettSak extends Component {
 
   render() {
     const {
-      serverInfo,
-      landkoder, sedtyper, sektor, buctyper, temar,
-      inntastetFnr, status, errdata,
-      valgtSektor,
-      settFnrSjekket, settFnrGyldighet,
-      fnrErGyldig, fnrErSjekket,
-      opprettetSak,
+      serverInfo, temar, inntastetFnr, status, errdata, valgtSektor, settFnrSjekket, settFnrGyldighet, opprettetSak,
     } = this.props;
-
-    const { institusjoner } = this.state;
-
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
     const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
     const { resettSokStatus } = this;
 
-    const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
     return (
       <div className="opprettsak">
         <Nav.Systemtittel>Opprett Sak</Nav.Systemtittel>
@@ -149,39 +114,7 @@ class OpprettSak extends Component {
                 />
               </Nav.Column>
             </Nav.Row>
-            <Nav.Row className="">
-              <Nav.Column xs="3">
-                <Skjema.Select id="id-sektor" feltNavn="sektor" label="Fagområde" bredde="xxl" disabled={!oppgittFnrErValidert}>
-                  {sektor && sektor.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                </Skjema.Select>
-              </Nav.Column>
-            </Nav.Row>
-            <Nav.Row className="">
-              <Nav.Column xs="3">
-                <Skjema.Select id="id-buctype" feltNavn="buctype" label="BUC" bredde="xxl" disabled={!oppgittFnrErValidert} onChange={this.oppdaterBucKode}>
-                  {buctyper && buctyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
-                </Skjema.Select>
-              </Nav.Column>
-              <Nav.Column xs="3">
-                <Skjema.Select id="id-sedtype" feltNavn="sedtype" label="SED" bredde="xxl" disabled={!oppgittFnrErValidert}>
-                  {this.erSedtyperGyldig(sedtyper) && sedtyper.map(element => <option value={element.kode} key={uuid()}>{element.kode}-{element.term}</option>)}
-                </Skjema.Select>
-              </Nav.Column>
-            </Nav.Row>
-            <Nav.Row className="">
-              <Nav.Column xs="3">
-                <Nav.Select id="id-landkode" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.landKode} onChange={this.oppdaterLandKode} label="Land">
-                  <option value="0" />
-                  {landkoder && landkoder.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
-                </Nav.Select>
-              </Nav.Column>
-              <Nav.Column xs="3">
-                <Nav.Select id="id-institusjon" bredde="xxl" disabled={!oppgittFnrErValidert} value={this.state.institusjonsID} onChange={this.oppdaterInstitusjonKode} label="Mottaker institusjon">
-                  <option value="0" />
-                  {institusjoner && institusjoner.map(element => <option value={element.institusjonsID} key={uuid()}>{element.navn}</option>)}
-                </Nav.Select>
-              </Nav.Column>
-            </Nav.Row>
+            <Fagomrade />
             <Nav.Row className="">
               {valgtSektor === 'FB' && <FamilieRelasjonsComponent />}
             </Nav.Row>
@@ -236,15 +169,10 @@ OpprettSak.propTypes = {
   sendSkjema: PT.func.isRequired,
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
-  settBuctype: PT.func.isRequired,
-  hentLandkoder: PT.func.isRequired,
   submitFailed: PT.bool.isRequired,
-  landkoder: PT.arrayOf(MPT.Kodeverk),
-  sedtyper: PT.arrayOf(MPT.Kodeverk),
   sedtype: PT.string,
   sektor: PT.arrayOf(MPT.Kodeverk),
   temar: PT.arrayOf(MPT.Kodeverk),
-  buctyper: PT.arrayOf(MPT.Kodeverk),
   buctype: PT.string,
   fnrErGyldig: PT.bool,
   fnrErSjekket: PT.bool,
@@ -257,15 +185,13 @@ OpprettSak.propTypes = {
     rinasaksnummer: PT.string,
     url: PT.string,
   }),
+  fnr: PT.string,
 };
 
 OpprettSak.defaultProps = {
-  landkoder: undefined,
-  sedtyper: undefined,
   sedtype: undefined,
   sektor: undefined,
   temar: undefined,
-  buctyper: undefined,
   buctype: undefined,
   fnrErGyldig: undefined,
   fnrErSjekket: undefined,
@@ -275,6 +201,7 @@ OpprettSak.defaultProps = {
   errdata: {},
   valgteFamilieRelasjoner: [],
   opprettetSak: {},
+  fnr: '',
 };
 
 const skjemaSelector = formValueSelector('opprettSak');
@@ -287,14 +214,11 @@ const mapStateToProps = state => ({
     },
   },
   serverInfo: ServerinfoSelectors.ServerinfoSelector(state),
-  landkoder: LandkoderSelectors.landkoderSelector(state),
   sektor: KodeverkSelectors.sektorSelector(state),
   fnrErGyldig: skjemaSelector(state, 'fnrErGyldig'),
   fnrErSjekket: skjemaSelector(state, 'fnrErSjekket'),
-  sedtyper: RinasakSelectors.sedtyperSelector(state),
   sedtype: skjemaSelector(state, 'sedtype'),
   buctype: skjemaSelector(state, 'buctype'),
-  buctyper: RinasakSelectors.buctyperSelector(state),
   temar: FagsakSelectors.temaSelector(state),
   inntastetFnr: skjemaSelector(state, 'fnr'),
   valgtSektor: skjemaSelector(state, 'sektor'),
@@ -304,6 +228,7 @@ const mapStateToProps = state => ({
   errdata: RinasakSelectors.errorDataSakSelector(state),
   opprettetSak: RinasakSelectors.sakSelector(state),
   fagsaker: FagsakSelectors.fagsakerSelector(state),
+  fnr: PersonSelectors.fnrSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -311,9 +236,7 @@ const mapDispatchToProps = dispatch => ({
   validerFnrRiktig: () => dispatch(clearAsyncError('opprettSak', 'fnr')),
   settFnrGyldighet: erGyldig => dispatch(change('opprettSak', 'fnrErGyldig', erGyldig)),
   settFnrSjekket: erSjekket => dispatch(change('opprettSak', 'fnrErSjekket', erSjekket)),
-  settBuctype: buctype => dispatch(change('opprettSak', 'buctype', buctype)),
   sendSkjema: data => dispatch(RinasakOperations.sendSak(data)),
-  hentLandkoder: buctype => dispatch(LandkoderOperations.hent(buctype)),
 });
 
 const validering = values => {
@@ -322,7 +245,7 @@ const validering = values => {
   const sektor = !values.sektor ? 'Du må velge sektor.' : null;
   const buctype = !values.buctype ? 'Du må velge buctype.' : null;
   const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
-  const land = !values.land ? 'Du må velge land.' : null;
+  const landKode = !values.landKode ? 'Du må velge land.' : null;
   const institusjonsID = !values.institusjonsID ? 'Du må velge institusjon.' : null;
 
   return {
@@ -330,7 +253,7 @@ const validering = values => {
     sektor,
     buctype,
     sedtype,
-    land,
+    landKode,
     institusjonsID,
   };
 };

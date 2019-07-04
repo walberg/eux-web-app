@@ -21,7 +21,13 @@ export const personSelector = createSelector(
   state => state.person.data,
   person => person
 );
+
 export const familieRelasjonerSelector = createSelector(
   state => state.person.data.relasjoner || [],
   relasjoner => relasjoner
+);
+
+export const fnrSelector = createSelector(
+  state => state.person.data.fnr,
+  fnr => fnr
 );

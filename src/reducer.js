@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
+import institusjonReducer from './ducks/institusjoner';
 import arbeidsforholdReducers from './ducks/arbeidsforhold';
 import dokumenterReducers from './ducks/dokumenter';
 import fagsakReducers from './ducks/fagsak';
@@ -13,6 +14,7 @@ import saksbehandlerReducers from './ducks/saksbehandler';
 import serverinfoReducers from './ducks/serverinfo';
 
 export default combineReducers({
+  institusjoner: institusjonReducer,
   arbeidsforhold: arbeidsforholdReducers,
   dokumenter: dokumenterReducers,
   fagsaker: fagsakReducers,
