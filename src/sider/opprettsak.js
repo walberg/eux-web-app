@@ -17,7 +17,6 @@ import PersonSok from './personsok';
 import Fagomrade from '../komponenter/Fagomrade';
 
 
-
 import './opprettsak.css';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
 import { PersonSelectors } from '../ducks/person';
