@@ -20,7 +20,7 @@ export function hentPerson(fnr) {
   });
 }
 
-export function slettPerson() {
+export function nullstillPerson() {
   return {
     type: Types.OK,
     data: {},

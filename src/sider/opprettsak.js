@@ -26,16 +26,18 @@ const btnStyle = {
   margin: '1.85em 0 0 0',
 };
 
+const initialState = {
+  tema: '',
+  fagsaker: [],
+  saksID: '',
+  visModal: false,
+};
+
 class OpprettSak extends Component {
-  state = {
-    tema: '',
-    fagsaker: [],
-    soktEtterSaker: false,
-    saksID: '',
-    visModal: false,
-  };
+  state = initialState;
 
   visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.soktEtterSaker);
+
   visArbeidsforhold = () => {
     const { valgtSektor, buctype, sedtype } = this.props;
     return ['FB'].includes(valgtSektor) && ['FB_BUC_01'].includes(buctype) && sedtype;
@@ -50,7 +52,8 @@ class OpprettSak extends Component {
     const saksID = event.target.value;
     this.setState({ saksID });
   };
-  hentFagsaker = async () => {
+
+  visFagsaker = async () => {
     const { tema } = this.state;
     const { fnr, valgtSektor } = this.props;
     const fagsaker = await Api.Fagsaker.hent(fnr, valgtSektor, tema);
@@ -93,6 +96,10 @@ class OpprettSak extends Component {
     settFnrSjekket(false);
   };
 
+  resettSkjemaState = () => {
+    this.setState(initialState);
+  }
+
   openModal = () => {
     this.setState({ visModal: true });
   };
@@ -105,12 +112,14 @@ class OpprettSak extends Component {
     const {
       serverInfo, temar, inntastetFnr, status, errdata, valgtSektor, settFnrSjekket, settFnrGyldighet, opprettetSak,
     } = this.props;
-
-    const { visModal } = this.state;
-
+    const {
+      tema, fagsaker, saksID, visModal,
+    } = this.state;
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
     const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
-    const { resettSokStatus, openModal, closeModal } = this;
+    const {
+      resettSkjemaState, openModal, closeModal, skjemaSubmit, visFagsaker, oppdaterTemaListe, oppdaterFagsakListe,
+    } = this;
 
     return (
       <div className="opprettsak">
@@ -121,7 +130,7 @@ class OpprettSak extends Component {
               <Nav.Column xs="6">
                 <PersonSok
                   inntastetFnr={inntastetFnr}
-                  resettSokStatus={resettSokStatus}
+                  resettSkjemaState={resettSkjemaState}
                   settFnrSjekket={settFnrSjekket}
                   settFnrGyldighet={settFnrGyldighet}
                 />
@@ -134,10 +143,10 @@ class OpprettSak extends Component {
             {['FB', 'UB'].includes(valgtSektor) && (
               <Nav.Row className="">
                 <Nav.Column xs="3">
-                  <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
+                  <BehandlingsTemaer temaer={temar} tema={tema} oppdaterTemaListe={oppdaterTemaListe} />
                 </Nav.Column>
                 <Nav.Column xs="2">
-                  <Nav.Knapp style={btnStyle} onClick={this.hentFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
+                  <Nav.Knapp style={btnStyle} onClick={visFagsaker} disabled={tema.length === 0}>Vis saker</Nav.Knapp>
                 </Nav.Column>
                 <Nav.Column xs="2">
                   <Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
@@ -147,14 +156,14 @@ class OpprettSak extends Component {
               </Nav.Row>
             )}
             {this.visFagsakerListe() &&
-              <Fagsaker fagsaker={this.state.fagsaker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+              <Fagsaker fagsaker={fagsaker} saksID={saksID} oppdaterFagsakListe={oppdaterFagsakListe} />
             }
             {this.visArbeidsforhold() &&
               <ArbeidsforholdController fnr={inntastetFnr} />
             }
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
-                <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
+                <Nav.Hovedknapp onClick={this.props.handleSubmit(skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
               </Nav.Column>
               <Nav.Column xs="3">
                 <Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
