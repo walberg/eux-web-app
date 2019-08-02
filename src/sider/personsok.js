@@ -67,6 +67,8 @@ class PersonSok extends Component {
         // fagsak og tema ligger i lokal state i personsok - dette resettes her:
         resettSkjemaState();
       } else {
+        // Ingen bruker funnet, nullstiller alle felter i opprettSak bortsett fra fnr, og setter flagg til false
+        nullstillSkjemaFelter(['sektor', 'buctype', 'sedtype', 'landKode', 'institusjonsID']);
         settFnrGyldighet(false);
         settFnrSjekket(false);
       }
