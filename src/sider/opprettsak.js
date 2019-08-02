@@ -25,12 +25,14 @@ const btnStyle = {
   margin: '1.85em 0 0 0',
 };
 
+const initialState = {
+  tema: '',
+  fagsaker: [],
+  saksID: '',
+};
+
 class OpprettSak extends Component {
-  state = {
-    tema: '',
-    fagsaker: [],
-    saksID: '',
-  };
+  state = initialState;
 
   visFagsakerListe = () => (['FB', 'UB'].includes(this.props.valgtSektor) && this.state.tema.length > 0 && this.state.fagsaker.length > 0);
 
@@ -92,13 +94,20 @@ class OpprettSak extends Component {
     settFnrSjekket(false);
   };
 
+  resettSkjemaState = () => {
+    this.setState(initialState);
+  }
+
   render() {
     const {
       serverInfo, temar, inntastetFnr, status, errdata, valgtSektor, settFnrSjekket, settFnrGyldighet, opprettetSak,
     } = this.props;
+    const {
+      tema, fagsaker, saksID,
+    } = this.state;
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
     const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
-    const { resettSokStatus } = this;
+    const { resettSkjemaState } = this;
 
     return (
       <div className="opprettsak">
@@ -109,7 +118,7 @@ class OpprettSak extends Component {
               <Nav.Column xs="6">
                 <PersonSok
                   inntastetFnr={inntastetFnr}
-                  resettSokStatus={resettSokStatus}
+                  resettSkjemaState={resettSkjemaState}
                   settFnrSjekket={settFnrSjekket}
                   settFnrGyldighet={settFnrGyldighet}
                 />
@@ -122,10 +131,10 @@ class OpprettSak extends Component {
             {['FB', 'UB'].includes(valgtSektor) && (
               <Nav.Row className="">
                 <Nav.Column xs="3">
-                  <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
+                  <BehandlingsTemaer temaer={temar} tema={tema} oppdaterTemaListe={this.oppdaterTemaListe} />
                 </Nav.Column>
                 <Nav.Column xs="2">
-                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
+                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={tema.length === 0}>Vis saker</Nav.Knapp>
                 </Nav.Column>
                 <Nav.Column xs="2">
                   <Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
@@ -135,7 +144,7 @@ class OpprettSak extends Component {
               </Nav.Row>
             )}
             {this.visFagsakerListe() &&
-              <Fagsaker fagsaker={this.state.fagsaker} saksID={this.state.saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
+              <Fagsaker fagsaker={fagsaker} saksID={saksID} oppdaterFagsakListe={this.oppdaterFagsakListe} />
             }
             {this.visArbeidsforhold() &&
               <ArbeidsforholdController fnr={inntastetFnr} />

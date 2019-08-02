@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reset } from 'redux-form';
+import { clearFields } from 'redux-form';
 import PT from 'prop-types';
 
 import * as MPT from '../proptypes/';
@@ -53,18 +53,19 @@ class PersonSok extends Component {
 
   sokEtterPerson = () => {
     const {
-      inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok, nullstillSkjema, slettPerson,
+      inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok, nullstillPerson, nullstillSkjemaFelter, resettSkjemaState,
     } = this.props;
-    // Nullstill hele skjema under søk, uansett resultat eller ikke
-    nullstillSkjema();
-    // Fjern person fra store
-    slettPerson();
-    if (inntastetFnr.length === 0) return;
+    // nullstiller persondata før søk
+    nullstillPerson();
     personSok(inntastetFnr).then(response => {
       if (response && response.data) {
         const person = { ...response.data };
         settFnrGyldighet(this.erPersonFunnet(person));
         settFnrSjekket(true);
+        // Vi fant en bruker, nullstiller alle felter i opprettSak bortsett fra fnr
+        nullstillSkjemaFelter(['sektor', 'buctype', 'sedtype', 'landKode', 'institusjonsID']);
+        // fagsak og tema ligger i lokal state i personsok - dette resettes her:
+        resettSkjemaState();
       } else {
         settFnrGyldighet(false);
         settFnrSjekket(false);
@@ -97,12 +98,13 @@ class PersonSok extends Component {
 }
 
 PersonSok.propTypes = {
-  nullstillSkjema: PT.func.isRequired,
+  nullstillSkjemaFelter: PT.func.isRequired,
   personSok: PT.func.isRequired,
-  slettPerson: PT.func.isRequired,
+  nullstillPerson: PT.func.isRequired,
   person: MPT.Person,
   settFnrGyldighet: PT.func.isRequired,
   settFnrSjekket: PT.func.isRequired,
+  resettSkjemaState: PT.func.isRequired,
   inntastetFnr: PT.string,
   status: PT.string,
   errdata: PT.object,
@@ -122,8 +124,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),
-  slettPerson: () => dispatch(PersonOperations.slettPerson()),
-  nullstillSkjema: () => dispatch(reset('opprettSak')),
+  nullstillPerson: () => dispatch(PersonOperations.nullstillPerson()),
+  nullstillSkjemaFelter: felter => dispatch(clearFields('opprettSak', false, false, ...felter)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonSok);
