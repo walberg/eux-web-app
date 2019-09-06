@@ -1,8 +1,8 @@
 #! groovy
 import jenkins.model.*
 
-properties([[$class: 'BuildDiscarderProperty', 
-			 strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', 
+properties([[$class: 'BuildDiscarderProperty',
+			 strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '',
 			            daysToKeepStr: '', numToKeepStr: '5']]])
 
 node {
@@ -111,8 +111,8 @@ node {
       [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
       sh """
      	  	mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${zipFile} -DartifactId=${application} \
-	            -DgroupId=no.nav.melosys -Dversion=${buildVersion} \
-	 	        -Ddescription='Melosys-web application' \
+	            -DgroupId=no.nav.eux -Dversion=${buildVersion} \
+	 	        -Ddescription='eux-web application' \
 		        -DrepositoryId=${repositoryId} -Durl=http://maven.adeo.no/nexus/content/repositories/${repositoryId}
         """
     }
