@@ -8,26 +8,30 @@ properties([[$class: 'BuildDiscarderProperty',
 node {
   def project = "navikt"
   def application = "eux-web-app"
+  def webMockDir = "/var/lib/jenkins/${application}/"
   def zipFile
 
   /* metadata */
   def buildVersion // major.minor.BUILD_NUMBER
-  def semVer
+  def semver
   def commitHash, commitHashShort, commitUrl, committer
-  def scmVars
+  def scmVars, prNummer
 
-  /* tools */
-  def NODE_JS_HOME = tool "node-10.10.0" // => "installation directory" = "/opt/node"
-  echo "${NODE_JS_HOME}"
-  def node = "${NODE_JS_HOME}/bin/node"
-  def npm = "${NODE_JS_HOME}/bin/npm"
+  /* tools: http://a34apvl00025.devillo.no:8080/configureTools/ */
+  def NODEJS_HOME = tool "node-11.12.0" // => "installation directory" = "/opt/node"
+  echo "${NODEJS_HOME}"
+  def node = "${NODEJS_HOME}/bin/node"
+  def npm = "${NODEJS_HOME}/bin/npm"
+  //env.PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+  //echo("${env.PATH}")
 
-  // Delete whole workspace before starting the build, so that the 'git clone' command below
-  // doesn't fail due to directory not being empty
+  // delete whole workspace before starting the build,
+  // so that the 'git clone' command below doesn't fail due to
+  // directory not being empty
   cleanWs()
 
   stage('Checkout') {
-    echo('Checkout from GitHub ...')
+    echo('Checkout from Github ...')
     scmVars = checkout scm
     scmVars.each { print it }
   }
@@ -38,6 +42,14 @@ node {
     commitUrl = "https://github.com/${project}/${application}/commit/${commitHash}"
     // gets the person who committed last as "Surname, First name"
     committer = sh(script: 'git log -1 --pretty=format:"%an"', returnStdout: true).trim()
+    def lsRemote = sh(script: "git ls-remote origin pull/*/head", returnStdout: true)
+    lsRemote.toString().split('\n').each {
+      if (it.startsWith(commitHash)) {
+        // Finn pr-nummer fra strengen: refs/pull/85/head
+        prNummer = it.split('/')[2]
+      }
+    }
+    echo("prNummer: ${prNummer}")
   }
 
   stage('npm install ') {
@@ -47,8 +59,8 @@ node {
     sh "${npm} config ls"
     sh "${npm} install"
 
-    semVer = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"").trim()
-    echo("semver=${semVer}")
+    semver = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"").trim()
+    echo("semver=*${semver}*")
   }
 
   stage('Test') {
@@ -59,49 +71,50 @@ node {
   stage('Build') {
     echo('Build Web App')
 
-    sh(returnStdout: true, script: "${npm} run build")
-  }
-
-  stage('Copy to pickup') {
-    def frontendDir = "/var/lib/jenkins/eux-web-app"
-    sh "rm -rf $frontendDir/*" // Clean the content, don't remove top folder
-    sh "cp -r build/* $frontendDir"
-  }
-
-  stage('Deploy ZIP archive to Maven') {
-    buildVersion ="${semVer}-${BUILD_NUMBER}"
-    echo("buildVersion=${buildVersion}")
-    zipFile = "${application}-${buildVersion}.zip"
-    sh "zip -r ${zipFile} build/*"
-
-    if (env.BRANCH_NAME == "master") {
-      configFileProvider(
-        [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
-        sh """
-     	      mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${zipFile} -DartifactId=${application} \
-	              -DgroupId=no.nav.eux -Dversion=${buildVersion} \
-	 	          -Ddescription='Eux-web-app JavaScript resources.' \
-		          -DrepositoryId=m2internal -Durl=http://maven.adeo.no/nexus/content/repositories/m2internal   
-          """
-      }
+    if (scmVars.GIT_BRANCH.equalsIgnoreCase("master")) {
+      buildVersion = "${semver}-${BUILD_NUMBER}"
+    }
+    else if (prNummer != null) {
+      // Hvis det eksisterer et token så betyr det at dette er en pull-request
+      buildVersion = "${semver}-PR-${prNummer}-SNAPSHOT"
     }
     else {
-      def majorMinor = semVer.split("\\.").take(2).join('.')
-      def qualifier = "SNAPSHOT"
-      def snapshotVersion ="${majorMinor}-${qualifier}"
-      def snapshotVersionZipfile = "${application}-${snapshotVersion}.zip"
-      echo("snapshotVersionZipfile=${snapshotVersionZipfile}")
-      sh "mv ${zipFile} ${snapshotVersionZipfile}"
+      buildVersion = "${semver}-SNAPSHOT"
+    }
+    echo("buildVersion=${buildVersion}")
 
-      configFileProvider(
-        [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
-        sh """
-     	      mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${snapshotVersionZipfile} -DartifactId=${application} \
-	              -DgroupId=no.nav.eux -Dversion=${snapshotVersion} \
-	 	          -Ddescription='Eux-web-app JavaScript resources.' \
-		          -DrepositoryId=m2snapshot -Durl=http://maven.adeo.no/nexus/content/repositories/m2snapshot   
-          """
-      }
+    sh "${npm} run build"
+    sh "${npm} prune"
+  }
+
+  stage('Create Zip artifact') {
+    sh "rm -rf $webMockDir*" // Clean the content, don't remove top folder
+    sh "cp -r build/* $webMockDir"
+    zipFile = "${application}-${buildVersion}.zip"
+    echo("zipFile:${zipFile}")
+    sh "cd build/; zip -r ../$zipFile *; cd .."
+    sh "cp ${zipFile} $webMockDir"
+  }
+
+  stage('Deploy to Nexus') {
+    def repositoryId
+    if (scmVars.GIT_BRANCH.equalsIgnoreCase("master")) {
+      repositoryId = "m2internal"
+    }
+    else {
+      repositoryId = "m2snapshot"
+    }
+
+    echo("repositoryId:${repositoryId}")
+
+    configFileProvider(
+      [configFile(fileId: 'navMavenSettings', variable: 'MAVEN_SETTINGS')]) {
+      sh """
+     	  	mvn --settings ${MAVEN_SETTINGS} deploy:deploy-file -Dfile=${zipFile} -DartifactId=${application} \
+	            -DgroupId=no.nav.melosys -Dversion=${buildVersion} \
+	 	        -Ddescription='Melosys-web application' \
+		        -DrepositoryId=${repositoryId} -Durl=http://maven.adeo.no/nexus/content/repositories/${repositoryId}
+        """
     }
   }
 }
