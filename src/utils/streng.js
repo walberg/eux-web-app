@@ -1,32 +1,24 @@
+import { toInteger, isEmpty } from 'lodash';
 
-export function boolTilNorsk (value) {
-  return value ? 'JA' : 'NEI';
-}
+export const boolTilNorsk = value => (value ? 'JA' : 'NEI');
 
-export function norskTilBool (value) {
-  return value ? (value.toLowerCase() === 'ja') : false;
-}
+export const norskTilBool = value => (value ? (value.toLowerCase() === 'ja') : false);
 
-export function boolTilStreng (value) {
-  if (value === undefined) { return undefined; }
+export const boolTilStreng = value => {
+  if (value === undefined || value === null) { return undefined; }
   return value ? 'true' : 'false';
-}
+};
 
-export function strengTilBool (value) {
-  return value === 'true';
-}
+export const strengTilBool = value => value === 'true';
 
-export function strengTilInt (value) {
-  return parseInt(value, 10) || 0;
-}
+export const tryParseBool = value => {
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  return value; // undefined, null, bool
+};
 
-export function tekstEllerDash(data) {
-  return data || '-';
-}
+export const strengTilInt = value => toInteger(value);
 
-export function isEmpty(streng) {
-  return !streng || streng.length === 0;
-}
-export function sammensattNavn(fornavn, etternavn) {
-  return (isEmpty(fornavn) || isEmpty(etternavn)) ? undefined : `${fornavn} ${etternavn}`;
-}
+export const tekstEllerDash = data => data || '-';
+
+export const sammensattNavn = (fornavn, etternavn) => ((isEmpty(fornavn) || isEmpty(etternavn)) ? undefined : `${fornavn} ${etternavn}`);

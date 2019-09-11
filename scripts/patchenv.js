@@ -16,6 +16,7 @@ if (branchName === 'unknown') {
 const {
   dependencies: {
     'eessi-kodeverk': kodeverkVersjon,
+    react: reactLibVersjon,
   },
 } = pkg;
 dotenv.set('REACT_APP_VERSION', version);
@@ -23,4 +24,5 @@ dotenv.set('REACT_APP_BUILD_DATETIME', moment().format('DD/MM/YYYY HH:mm'));
 dotenv.set('REACT_APP_BUILD_VERSION', buildNumber);
 dotenv.set('REACT_APP_BRANCH_NAME', branchName);
 dotenv.set('REACT_APP_MELOSYS_KODEVERK', kodeverkVersjon);
+dotenv.set('REACT_APP_REACT_LIB', reactLibVersjon.slice(1));
 

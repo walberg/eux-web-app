@@ -6,7 +6,7 @@ import {
   strengTilBool,
   strengTilInt,
   tekstEllerDash,
-  isEmpty, sammensattNavn
+  sammensattNavn
 } from './streng';
 
 describe('streng.js', () => {
@@ -36,6 +36,9 @@ describe('streng.js', () => {
     test('Oversetter ikke undefined', () => {
       expect(boolTilStreng(undefined)).toEqual(undefined);
     });
+    test('Oversetter ikke null', () => {
+      expect(boolTilStreng(null)).toEqual(undefined);
+    });
   });
   describe('strengTilBool', () => {
     test('Transformerer "true" => true', () => {
@@ -61,19 +64,8 @@ describe('streng.js', () => {
       expect(tekstEllerDash(undefined)).toEqual('-');
     });
     test('Returnerer gyldig verdi uendret', () => {
-      const data = {}
+      const data = {};
       expect(tekstEllerDash(data)).toEqual(data);
-    });
-  });
-  describe('isEmpty', () => {
-    test('streng = undefined return true', () => {
-      expect(isEmpty(undefined)).toEqual(true);
-    });
-    test('string = "" return true', () => {
-      expect(isEmpty('')).toEqual(true);
-    });
-    test('data = "astring" return false', () => {
-      expect(isEmpty('astring')).toEqual(false);
     });
   });
   describe('sammensattNavn', () => {

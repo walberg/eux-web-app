@@ -8,7 +8,7 @@ import * as Landkoder from './modules/landkoder';
 import * as Personer from './modules/personer';
 import * as Rina from './modules/rina';
 import * as Saksbehandler from './modules/saksbehandler';
-import * as Serverinfo from './modules/serverinfo';
+import * as ServerInfo from './modules/serverinfo';
 
 // from .env or .env.local
 // const API_BASE_URL = `${process.env.REACT_APP_API_BASE_URL}`;
@@ -25,5 +25,5 @@ export {
   Personer,
   Rina,
   Saksbehandler,
-  Serverinfo,
+  ServerInfo,
 };
