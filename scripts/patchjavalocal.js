@@ -20,7 +20,7 @@ const DEFAULT_JAVA_SERVER = 'http://localhost:8080';
 // update .env with custom version
 dotenv.set('REACT_APP_BUILD_VERSION', 'java_local');
 dotenv.set('REACT_APP_LOCAL_CONTEXT', '/eux');
-dotenv.set('REACT_APP_API_BASE_URL', '/api/');
+dotenv.set('REACT_APP_API_BASE_URL', '/eux/api/');
 dotenv.set('REACT_APP_JAVA_LOCAL_HOST', DEFAULT_JAVA_SERVER);
 
 proxy['/api'].target = DEFAULT_JAVA_SERVER;
@@ -29,4 +29,3 @@ if (proxy) {
   pkg.proxy = proxy;
   writePkg.sync(pkg);
 }
-

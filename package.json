@@ -12,10 +12,11 @@
   "private": true,
   "readme": "README.md",
   "dependencies": {
+    "@loadable/component": "^5.10.2",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "eessi-kodeverk": "1.1.0",
-    "history": "^4.9.0",
+    "history": "^4.10.1",
     "lodash": "^4.17.15",
     "lodash.throttle": "^4.1.1",
     "moment": "^2.24.0",
@@ -33,7 +34,7 @@
     "nav-frontend-grid-style": "^0.2.18",
     "nav-frontend-hjelpetekst": "^1.0.40",
     "nav-frontend-hjelpetekst-style": "^0.3.30",
-    "nav-frontend-ikoner-assets": "^0.2.32",
+    "nav-frontend-ikoner-assets": "^1.0.2",
     "nav-frontend-js-utils": "^1.0.7",
     "nav-frontend-knapper": "^1.0.34",
     "nav-frontend-knapper-style": "^0.3.29",
@@ -49,8 +50,8 @@
     "nav-frontend-modal-style": "^0.3.30",
     "nav-frontend-paneler": "^1.0.18",
     "nav-frontend-paneler-style": "^0.3.16",
-    "nav-frontend-skjema": "^1.0.70",
-    "nav-frontend-skjema-style": "^1.0.43",
+    "nav-frontend-skjema": "^1.0.71",
+    "nav-frontend-skjema-style": "^1.0.44",
     "nav-frontend-snakkeboble": "^1.0.30",
     "nav-frontend-snakkeboble-style": "^0.2.20",
     "nav-frontend-spinner": "^1.0.19",
@@ -68,11 +69,15 @@
     "react": "^16.9.0",
     "react-collapse": "^4.0.3",
     "react-dom": "^16.9.0",
-    "react-loadable": "^5.5.0",
+    "react-highcharts": "^16.1.0",
+    "react-maskedinput": "^4.0.1",
+    "react-modal": "^3.10.1",
     "react-motion": "^0.5.2",
+    "react-on-screen": "^2.1.1",
+    "react-pdf": "^4.1.0",
     "react-redux": "^7.1.1",
     "react-redux-form-validation": "^1.0.1",
-    "react-router-dom": "^5.0.1",
+    "react-router-dom": "^5.1.0",
     "react-router-redux": "^4.0.8",
     "react-scripts": "^1.1.5",
     "read-pkg": "^5.2.0",
@@ -111,9 +116,7 @@
     "eject": "react-scripts eject",
     "eslint:src": "eslint src --ext .js",
     "eslint:scripts": "eslint scripts --ext .js",
-    "eslint": "npm-run-all -s eslint:*",
-    "lesshint": "lesshint --reporter ./lesshint-reporter src/",
-    "mocha": "mocha"
+    "eslint": "npm-run-all -s eslint:*"
   },
   "jest-junit": {
     "suiteName": "jest tests",
@@ -135,7 +138,7 @@
     "body-parser": "^1.19.0",
     "cross-env": "^5.2.1",
     "dotenv-save": "^1.2.0",
-    "enzyme": "^3.9.0",
+    "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -147,6 +150,7 @@
     "eslint-plugin-react": "^7.11.1",
     "express": "^4.17.1",
     "git-branch": "^2.0.1",
+    "http-proxy-middleware": "^0.20.0",
     "jest-each": "^24.9.0",
     "jest-fetch-mock": "^2.1.2",
     "jest-junit": "^8.0.0",
@@ -160,7 +164,7 @@
     "redux-mock-store": "^1.5.3",
     "semver": "^6.3.0",
     "shelljs": "^0.8.3",
-    "source-map-explorer": "^2.0.1",
+    "source-map-explorer": "^2.1.0",
     "webpack": "^3.12.0",
     "write-pkg": "^4.0.0"
   },
@@ -177,6 +181,5 @@
         "^/frontendlogger/": "frontendlogger/"
       }
     }
-  },
-  "_id": "neessi@1.0.0"
+  }
 }
