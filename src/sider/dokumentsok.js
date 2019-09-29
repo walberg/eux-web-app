@@ -26,7 +26,6 @@ class DokumentSok extends Component {
         nyttSok: true,
         rinadokumenter: response,
       });
-
       settRinaSjekket(true);
       if (response.length > 0) {
         settRinaGyldighet(true);
