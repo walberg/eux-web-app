@@ -7,10 +7,9 @@ import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import { PersonOperations, PersonSelectors } from '../ducks/person';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
-import PersonKort from '../komponenter/PersonKort';
+import { PersonKort } from '../komponenter/';
 
 import './personsok.css';
-
 
 class PersonSok extends Component {
   erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
@@ -35,7 +34,6 @@ class PersonSok extends Component {
   render() {
     const { sokEtterPerson } = this;
     const { person, status, errdata } = this.props;
-
     const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
     return (
       <div className="personsok">
