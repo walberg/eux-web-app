@@ -5,7 +5,7 @@ describe('utils.js:', () => {
 
   describe('fn', () => {
     test('parser et funksjonsargument som funksjon.', () => {
-      function foo () {}
+      function foo() { }
       expect(fn(foo)).toBe(foo);
     });
   });

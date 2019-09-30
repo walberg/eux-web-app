@@ -43,14 +43,22 @@ export const isJSON = str => {
     return false;
   }
 };
-/* eslint-disable prefer-rest-params */
-export const storeForbokstaver = () => {
-  const tekst = Array.prototype.filter.call(arguments, s => s).join(' ');
-  return (
-    tekst &&
-    tekst.replace(
-      /\w\S*/g,
-      ord => ord.charAt(0).toUpperCase() + ord.substr(1).toLowerCase()
-    )
-  );
+
+/**
+ * Returnerer ny string hvor hver forbokstav er stor
+ * @param {string} setning
+ * @return {string}
+ */
+export const storeForbokstaver = setning => setning
+  .split(' ')
+  .map(e => (e.substring(0, 1).toUpperCase() + e.substring(1)))
+  .join(' ');
+
+/**
+ * eksponering av location API
+ */
+export const location = {
+  reload: forcedReload => window.location.reload(forcedReload),
+  assign: DOMString => window.location.assign(DOMString),
+  replace: DOMString => window.location.replace(DOMString),
 };

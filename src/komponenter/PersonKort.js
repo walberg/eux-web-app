@@ -8,6 +8,7 @@ import * as Eux from '../felles-komponenter/Ikon';
 
 import './personsok.css';
 import { formatterDatoTilNorsk } from '../utils/dato';
+import * as utils from '../utils';
 
 
 const PersonKort = ({ person }) => {
@@ -21,14 +22,13 @@ const PersonKort = ({ person }) => {
       <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
     </div>
   );
-
   return (
     <div>
       <Nav.Panel className="personsok__kort">
         <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
         <Nav.Knapp
           className="familierelasjoner__knapp familierelasjoner__knapp--slett"
-          onClick={() => window.location.reload()}
+          onClick={() => utils.location.reload(false)}
         >
           <Eux.Icon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
           <div className="familierelasjoner__knapp__label">Fjern</div>
