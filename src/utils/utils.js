@@ -44,21 +44,3 @@ export const isJSON = str => {
   }
 };
 
-/**
- * Returnerer ny string hvor hver forbokstav er stor
- * @param {string} setning
- * @return {string}
- */
-export const storeForbokstaver = setning => setning
-  .split(' ')
-  .map(e => (e.substring(0, 1).toUpperCase() + e.substring(1)))
-  .join(' ');
-
-/**
- * eksponering av location API
- */
-export const location = {
-  reload: forcedReload => window.location.reload(forcedReload),
-  assign: DOMString => window.location.assign(DOMString),
-  replace: DOMString => window.location.replace(DOMString),
-};
