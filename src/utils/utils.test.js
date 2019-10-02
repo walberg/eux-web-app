@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { fn, isJSON, storeForbokstaver } from './utils';
+import { fn, isJSON } from './utils';
 
 describe('utils.js:', () => {
 
@@ -24,13 +24,6 @@ describe('utils.js:', () => {
     test('validerer tomt object literal som false', () => {
       const testObjekt = {};
       expect(isJSON(testObjekt)).toEqual(false);
-    });
-  });
-
-  describe('storeForbokstaver', () => {
-    test('Oppdaterer forste bokstav i hvert ord i setningen med stor bokstav', () => {
-      const testString = 'en to tre fire fem';
-      expect(storeForbokstaver(testString)).toEqual('En To Tre Fire Fem');
     });
   });
 });
