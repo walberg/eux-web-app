@@ -18,7 +18,7 @@ let store;
 let wrapper;
 
 
-describe(('Opprettsak Test Suite'), () => {
+describe(('Vedlegg Test Suite'), () => {
   beforeEach(() => {
     store = mockStore(initialStore.getState());
     wrapper = diveUntillTarget(shallow(<Vedlegg store={store} location={{}} />), 'Vedlegg');
