@@ -6,19 +6,20 @@ import * as adresse from './adresse';
 import * as dato from './dato';
 import * as streng from './streng';
 import * as logger from './logger';
+import * as page from './page';
 import * as queryString from './queryString';
 import * as yup from './yup';
 
-import { buildinfo, delay, fn, isJSON, verdiSomNullable, queryParamsTilObjekt, erPropertyUnik, finnVerdierMedKey, location } from './utils';
+import { buildinfo, delay, fn, isJSON, verdiSomNullable, queryParamsTilObjekt, erPropertyUnik, finnVerdierMedKey } from './utils';
 
 export {
   buildinfo, delay, fn, isJSON, verdiSomNullable, queryParamsTilObjekt, erPropertyUnik, finnVerdierMedKey,
   adresse,
   dato, streng,
   logger,
+  page,
   queryString,
   yup,
-  location,
   // isUndefined as _isUndefined,
   isFunction as _isFunction,
   isNil as _isNil,
