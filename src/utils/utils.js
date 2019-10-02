@@ -43,14 +43,4 @@ export const isJSON = str => {
     return false;
   }
 };
-/* eslint-disable prefer-rest-params */
-export const storeForbokstaver = () => {
-  const tekst = Array.prototype.filter.call(arguments, s => s).join(' ');
-  return (
-    tekst &&
-    tekst.replace(
-      /\w\S*/g,
-      ord => ord.charAt(0).toUpperCase() + ord.substr(1).toLowerCase()
-    )
-  );
-};
+
