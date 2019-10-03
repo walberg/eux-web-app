@@ -5,7 +5,7 @@ import configureStore from 'redux-mock-store';
 import createStore from '../store';
 import diveUntillTarget from '../../test/utils';
 import mockData from '../../test/dokumentsokMockData';
-import * as API from '../services/api';
+import * as Api from '../services/api';
 import * as Skjema from '../felles-komponenter/skjema';
 import * as Nav from '../utils/navFrontend';
 import { DokumentKort } from '../komponenter';
@@ -36,7 +36,7 @@ describe(('Dokumentsok Test Suite'), () => {
   });
   describe('Logikk', () => {
     describe('sokEtterDokumenter', () => {
-      API.Dokumenter.hent = jest.fn(() => Promise.resolve(mockData.dokumenter));
+      Api.Dokumenter.hent = jest.fn(() => Promise.resolve(mockData.dokumenter));
       it('bryter hvis !inntastetRinasaksnummer', () => {
         wrapper.instance().sokEtterDokumenter();
         expect(wrapper.state()).toHaveProperty('searching', false);
@@ -45,8 +45,8 @@ describe(('Dokumentsok Test Suite'), () => {
         wrapper.setProps({ inntastetRinasaksnummer: '1669' });
         wrapper.instance().sokEtterDokumenter();
         expect(wrapper.state()).toHaveProperty('searching', true);
-        expect(API.Dokumenter.hent).toHaveBeenCalledTimes(1);
-        expect(API.Dokumenter.hent).toHaveBeenCalledWith('1669');
+        expect(Api.Dokumenter.hent).toHaveBeenCalledTimes(1);
+        expect(Api.Dokumenter.hent).toHaveBeenCalledWith('1669');
         await wrapper.update();
         expect(wrapper.state()).toHaveProperty('searching', false);
         expect(wrapper.state()).toHaveProperty('nyttSok', true);
