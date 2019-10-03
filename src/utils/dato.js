@@ -139,9 +139,6 @@ function beregnAlder(foedselsdato) {
   return moment().diff(foedselsdato, 'years');
 }
 
-const yyyyMMdd = dato => moment(dato).format('YYYY-MM-DD');
-
-
 export {
   vaskInputDato,
   normaliserInputDato,
@@ -155,5 +152,4 @@ export {
   erGyldigPeriode,
   erIPeriode,
   MAX_AR_FREM_I_TID,
-  yyyyMMdd,
 };

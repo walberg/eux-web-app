@@ -14,7 +14,7 @@ const DokumentKort = ({ dokumenter }) => (
       {dokumenter && dokumenter.map(element =>
         <option
           value={element.rinadokumentID}
-          key={element.rinadokumentID}>{element.kode} =&gt; {Utils.dato.yyyyMMdd(element.opprettetdato)}
+          key={element.rinadokumentID}>{element.kode} =&gt; {Utils.dato.formatterDatoTilNorsk(element.opprettetdato)}
         </option>)}
     </Skjema.Select>
   </Nav.Panel>

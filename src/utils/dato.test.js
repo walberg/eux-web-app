@@ -263,11 +263,4 @@ describe('dato.js:', () => {
       expect(beregnAlder(foedselsdato)).toBe(forventetAlder);
     })
   })
-
-  describe('yyyyMMdd', () => {
-    test('Returerer dato i lesbart format', () => {
-      const testString = '2019-10-03T12:43:58+0000';
-      expect(yyyyMMdd(testString)).toEqual('2019-10-03');
-    });
-  });
 });
