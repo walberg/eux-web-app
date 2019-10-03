@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { yyyyMMdd, vaskInputDato, normaliserInputDato, formatterDatoTilNorsk, formatterDatoTilISO, formatterKortDatoTilNorsk, datoDiff, datoDiffMenneskelig, beregnAlder } from './dato';
+import { vaskInputDato, normaliserInputDato, formatterDatoTilNorsk, formatterDatoTilISO, formatterKortDatoTilNorsk, datoDiff, datoDiffMenneskelig, beregnAlder } from './dato';
 
 import MockDate from 'mockdate';
 import moment from 'moment/moment'
