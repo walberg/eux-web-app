@@ -9,4 +9,5 @@ const Arbeidsforhold = props => (
     <FieldArray name="tilleggsopplysninger.arbeidsforhold" component={ArbeidsforholdListe} props={props} />
   </div>
 );
+
 export default Arbeidsforhold;
