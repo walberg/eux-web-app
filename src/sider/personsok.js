@@ -6,46 +6,10 @@ import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import { PersonOperations, PersonSelectors } from '../ducks/person';
-import { PanelHeader } from '../felles-komponenter/panelHeader';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
-
-import * as Eux from '../felles-komponenter/Ikon';
+import { PersonKort } from '../komponenter/';
 
 import './personsok.css';
-import { formatterDatoTilNorsk } from '../utils/dato';
-
-
-const PersonKort = ({ person }) => {
-  const {
-    fnr, fdato, fornavn, etternavn, kjoenn,
-  } = person;
-
-  const panelUndertittel = (
-    <div className="panelheader__undertittel">
-      <span>Fødselsnummer: {fnr}</span>
-      <span>Fødselsdato: {formatterDatoTilNorsk(fdato)}</span>
-    </div>
-  );
-
-  return (
-    <div>
-      <Nav.Panel className="personsok__kort">
-        <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
-        <Nav.Knapp
-          className="familierelasjoner__knapp familierelasjoner__knapp--slett"
-          onClick={() => window.location.reload()}
-        >
-          <Eux.Icon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />
-          <div className="familierelasjoner__knapp__label">Fjern</div>
-        </Nav.Knapp>
-      </Nav.Panel>
-    </div>
-  );
-};
-
-PersonKort.propTypes = {
-  person: MPT.Person.isRequired,
-};
 
 class PersonSok extends Component {
   erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
@@ -70,7 +34,6 @@ class PersonSok extends Component {
   render() {
     const { sokEtterPerson } = this;
     const { person, status, errdata } = this.props;
-
     const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
     return (
       <div className="personsok">

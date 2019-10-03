@@ -6,6 +6,7 @@ import * as adresse from './adresse';
 import * as dato from './dato';
 import * as streng from './streng';
 import * as logger from './logger';
+import * as page from './page';
 import * as queryString from './queryString';
 import * as yup from './yup';
 
@@ -16,6 +17,7 @@ export {
   adresse,
   dato, streng,
   logger,
+  page,
   queryString,
   yup,
   // isUndefined as _isUndefined,
