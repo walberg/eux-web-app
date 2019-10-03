@@ -124,7 +124,7 @@ const form = {
   form: 'vedlegg',
   enableReinitialize: true,
   destroyOnUnmount: true,
-  onSubmit: () => {},
+  onSubmit: () => { },
   validate: values => {
     const journalpostID = journalpostValidation(values.journalpostID);
     const dokumentID = !values.dokumentID ? 'Du må taste inn en dokumentID' : null;
