@@ -5,7 +5,6 @@ import ArbeidsforholdListe from './ArbeidsforholdListe';
 import mockData from '../../../test/arbeidsforholdMockData';
 import ArbeidsforholdLinje from './ArbeidsforholdLinje';
 
-let uuid = require('uuid/v4');
 
 let wrapper;
 
@@ -48,10 +47,12 @@ describe(('ArbeidsforholdListe Test Suite'), () => {
       expect(wrapper).toHaveLength(1);
     });
     describe('ArbeidsforholdLinje', () => {
-      it('vises tre ganger med korrekte props', () => {
-        uuid = jest.fn(() => '123');
+      it('vises Fragment tre ganger med korrekte props', () => {
         const component = wrapper.find(ArbeidsforholdLinje);
         expect(component).toHaveLength(3);
+        expect(component.at(0).props()).toHaveProperty('arbeidsforholdet', mockData.arbeidsforhold[0]);
+        expect(component.at(0).props()).toHaveProperty('erValgt', true);
+        expect(typeof component.at(0).props().arbeidsforholdKlikkHandler).toEqual('function');
       });
     });
   });
