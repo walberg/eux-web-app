@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PT from 'prop-types';
 import moment from 'moment/moment';
@@ -25,21 +25,19 @@ DokumentKort.propTypes = {
 DokumentKort.defaultProps = {
   dokumenter: [],
 };
-class DokumentSok extends Component {
-  state = {
-    searching: false,
-  };
+const DokumentSok = props => {
+  const [searching, setSearching] = React.useState(false);
+  const [nyttSok, setNyttSok] = React.useState(false);
+  const [rinadokumenter, setRinadokumenter] = React.useState([]);
 
-  sokEtterDokumenter = () => {
-    const { inntastetRinasaksnummer, settRinaGyldighet, settRinaSjekket } = this.props;
+  const sokEtterDokumenter = () => {
+    const { inntastetRinasaksnummer, settRinaSjekket, settRinaGyldighet } = props;
     if (inntastetRinasaksnummer.length === 0) return;
-    this.setState({ searching: true });
+    setSearching(true);
     API.Dokumenter.hent(inntastetRinasaksnummer).then(response => {
-      this.setState({
-        searching: false,
-        nyttSok: true,
-        rinadokumenter: response,
-      });
+      setSearching(false);
+      setNyttSok(true);
+      setRinadokumenter(response);
 
       settRinaSjekket(true);
       if (response.length > 0) {
@@ -48,47 +46,40 @@ class DokumentSok extends Component {
     });
   };
 
-  inntastetRinaSaksnummerHarBlittEndret = () => {
-    this.setState({ rinadokumenter: [] });
-    this.setState({ nyttSok: false });
+  const inntastetRinaSaksnummerHarBlittEndret = () => {
+    setRinadokumenter([]);
+    setNyttSok(false);
   };
-  render() {
-    const { sokEtterDokumenter, inntastetRinaSaksnummerHarBlittEndret } = this;
-    const { searching, rinadokumenter, nyttSok } = this.state;
-    const harDokumenter = () => rinadokumenter && rinadokumenter.length;
-    const harIngenDokumenter = () => rinadokumenter && rinadokumenter.length === 0;
-    const dokumentKort = harDokumenter() ? <DokumentKort dokumenter={rinadokumenter} /> : null;
-    const sokeStatus = (nyttSok && harIngenDokumenter()) ? <p>Ingen dokumenter funnet</p> : null;
-    const visVenteSpinner = searching;
-    return (
-      <div className="dokumentsok">
-        <div className="dokumentsok__skjema">
-          <Skjema.Input
-            label="RINA saksnummer"
-            className="dokumentsok__input"
-            bredde="XL"
-            feltNavn="rinasaksnummer"
-            onKeyUp={inntastetRinaSaksnummerHarBlittEndret}
-          />
-          <Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter} spinner={visVenteSpinner}>SØK</Nav.Knapp>
-        </div>
-        {dokumentKort}
-        {sokeStatus}
+
+  const harDokumenter = () => rinadokumenter && rinadokumenter.length;
+  const harIngenDokumenter = () => rinadokumenter && rinadokumenter.length === 0;
+  const dokumentKort = harDokumenter() ? <DokumentKort dokumenter={rinadokumenter} /> : null;
+  const sokeStatus = (nyttSok && harIngenDokumenter()) ? <p>Ingen dokumenter funnet</p> : null;
+  const visVenteSpinner = searching;
+  return (
+    <div className="dokumentsok">
+      <div className="dokumentsok__skjema">
+        <Skjema.Input
+          label="RINA saksnummer"
+          className="dokumentsok__input"
+          bredde="XL"
+          feltNavn="rinasaksnummer"
+          onKeyUp={inntastetRinaSaksnummerHarBlittEndret}
+        />
+        <Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter} spinner={visVenteSpinner}>SØK</Nav.Knapp>
       </div>
-    );
-  }
-}
+      {dokumentKort}
+      {sokeStatus}
+    </div>
+  );
+};
 DokumentSok.propTypes = {
-  searching: PT.bool,
   inntastetRinasaksnummer: PT.string,
-  rinadokumenter: PT.array,
   settRinaGyldighet: PT.func.isRequired,
   settRinaSjekket: PT.func.isRequired,
 };
 DokumentSok.defaultProps = {
-  searching: false,
   inntastetRinasaksnummer: '',
-  rinadokumenter: [],
 };
 
 const mapStateToProps = state => ({

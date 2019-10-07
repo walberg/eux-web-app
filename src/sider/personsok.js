@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PT from 'prop-types';
 
@@ -47,18 +47,18 @@ PersonKort.propTypes = {
   person: MPT.Person.isRequired,
 };
 
-class PersonSok extends Component {
-  erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
+const PersonSok = props => {
+  const erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
 
-  sokEtterPerson = () => {
+  const sokEtterPerson = () => {
     const {
       inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok,
-    } = this.props;
+    } = props;
     if (inntastetFnr.length === 0) return;
     personSok(inntastetFnr).then(response => {
       if (response && response.data) {
         const person = { ...response.data };
-        settFnrGyldighet(this.erPersonFunnet(person));
+        settFnrGyldighet(erPersonFunnet(person));
         settFnrSjekket(true);
       } else {
         settFnrGyldighet(false);
@@ -67,30 +67,26 @@ class PersonSok extends Component {
     });
   };
 
-  render() {
-    const { sokEtterPerson } = this;
-    const { person, status, errdata } = this.props;
-
-    const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
-    return (
-      <div className="personsok">
-        <div className="personsok__skjema">
-          <Skjema.Input
-            label="Finn bruker"
-            className="personsok__input"
-            feltNavn="fnr"
-            type="number"
-          />
-          {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
-          <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
-        </div>
-        {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
-        {errdata.status && <p>{errdata.message}</p>}
-        {personKort}
+  const { person, status, errdata } = props;
+  const personKort = person && person.fornavn && person.etternavn ? <PersonKort person={person} /> : null;
+  return (
+    <div className="personsok">
+      <div className="personsok__skjema">
+        <Skjema.Input
+          label="Finn bruker"
+          className="personsok__input"
+          feltNavn="fnr"
+          type="number"
+        />
+        {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
+        <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
       </div>
-    );
-  }
-}
+      {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
+      {errdata.status && <p>{errdata.message}</p>}
+      {personKort}
+    </div>
+  );
+};
 
 PersonSok.propTypes = {
   personSok: PT.func.isRequired,

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PT from 'prop-types';
 import { change, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
@@ -14,59 +14,55 @@ import { RinavedleggOperations, RinavedleggSelectors } from '../ducks/rinavedleg
 import { getParam } from '../utils/queryString';
 import './vedlegg.css';
 
-class Vedlegg extends Component {
-  componentDidMount() {
-    const { location, oppdaterRinaSaksnummer } = this.props;
-    const rinasaksnummer = getParam(location, 'rinasaksnummer');
-    oppdaterRinaSaksnummer(rinasaksnummer);
-  }
-
-  overrideDefaultSubmit = event => {
+const Vedlegg = props => {
+  const { location, oppdaterRinaSaksnummer } = props;
+  const rinasaksnummer = getParam(location, 'rinasaksnummer');
+  const overrideDefaultSubmit = event => {
     event.preventDefault();
   };
-  render() {
-    const {
-      handleSubmit, sendSkjema, vedleggStatus, vedlegg, inntastetRinasaksnummer, rinadokumentID, settRinaGyldighet, settRinaSjekket, rinaNrErGyldig, rinaNrErSjekket,
-    } = this.props;
-    const responsLenke = vedlegg && vedlegg.url;
-    const visVenteSpinner = ['PENDING'].includes(vedleggStatus);
-    const disableSendKnapp = !(rinaNrErGyldig && rinaNrErSjekket && rinadokumentID);
-
-    return (
-      <div className="vedlegg">
-        <Nav.Container fluid>
-          <form onSubmit={this.overrideDefaultSubmit}>
-            <Nav.Row>
-              <Nav.Column xs="6">
-                <Nav.Panel className="vedlegg__skjema">
-                  <Nav.Fieldset legend="Vedleggs informasjon">
-                    <Nav.HjelpetekstBase id="journalPostID" type="hoyre">Journalpost ID finner du i Gosys</Nav.HjelpetekstBase>
-                    <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
-                    <Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Nav.HjelpetekstBase>
-                    <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
-                    <DokumentSok
-                      inntastetRinasaksnummer={inntastetRinasaksnummer}
-                      settRinaGyldighet={settRinaGyldighet}
-                      settRinaSjekket={settRinaSjekket}
-                    />
-                  </Nav.Fieldset>
-                  <div className="vedlegg__submmit">
-                    <Nav.Hovedknapp
-                      onClick={handleSubmit(sendSkjema)}
-                      disabled={disableSendKnapp || visVenteSpinner}
-                      spinner={visVenteSpinner}>Send vedlegg
-                    </Nav.Hovedknapp>
-                  </div>
-                  <StatusLinje status={vedleggStatus} url={responsLenke} tittel="Vedlegget" />
-                </Nav.Panel>
-              </Nav.Column>
-            </Nav.Row>
-          </form>
-        </Nav.Container>
-      </div>
-    );
-  }
-}
+  React.useEffect(() => {
+    oppdaterRinaSaksnummer(rinasaksnummer);
+  }, []);
+  const {
+    handleSubmit, sendSkjema, vedleggStatus, vedlegg, inntastetRinasaksnummer, rinadokumentID, settRinaGyldighet, settRinaSjekket, rinaNrErGyldig, rinaNrErSjekket,
+  } = props;
+  const responsLenke = vedlegg && vedlegg.url;
+  const visVenteSpinner = ['PENDING'].includes(vedleggStatus);
+  const disableSendKnapp = !(rinaNrErGyldig && rinaNrErSjekket && rinadokumentID);
+  return (
+    <div className="vedlegg">
+      <Nav.Container fluid>
+        <form onSubmit={overrideDefaultSubmit}>
+          <Nav.Row>
+            <Nav.Column xs="6">
+              <Nav.Panel className="vedlegg__skjema">
+                <Nav.Fieldset legend="Vedleggs informasjon">
+                  <Nav.HjelpetekstBase id="journalPostID" type="hoyre">Journalpost ID finner du i Gosys</Nav.HjelpetekstBase>
+                  <Skjema.Input feltNavn="journalpostID" label="JournalpostID" />
+                  <Nav.HjelpetekstBase id="dokumentID" type="under">Dokument ID finner du i Gosys</Nav.HjelpetekstBase>
+                  <Skjema.Input feltNavn="dokumentID" label="DokumentID" />
+                  <DokumentSok
+                    inntastetRinasaksnummer={inntastetRinasaksnummer}
+                    settRinaGyldighet={settRinaGyldighet}
+                    settRinaSjekket={settRinaSjekket}
+                  />
+                </Nav.Fieldset>
+                <div className="vedlegg__submmit">
+                  <Nav.Hovedknapp
+                    onClick={handleSubmit(sendSkjema)}
+                    disabled={disableSendKnapp || visVenteSpinner}
+                    spinner={visVenteSpinner}>Send vedlegg
+                  </Nav.Hovedknapp>
+                </div>
+                <StatusLinje status={vedleggStatus} url={responsLenke} tittel="Vedlegget" />
+              </Nav.Panel>
+            </Nav.Column>
+          </Nav.Row>
+        </form>
+      </Nav.Container>
+    </div>
+  );
+};
 
 Vedlegg.propTypes = {
   location: PT.object.isRequired,

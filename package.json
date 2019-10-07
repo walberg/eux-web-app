@@ -1,6 +1,5 @@
 {
   "name": "neessi",
-  "version": "1.0.1",
   "version": "1.0.0",
   "description": "Medlemsskap og lovvalgssystem",
   "author": {
@@ -182,5 +181,6 @@
         "^/frontendlogger/": "frontendlogger/"
       }
     }
-  }
+  },
+  "_id": "neessi@1.0.0"
 }
