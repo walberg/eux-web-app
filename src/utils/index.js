@@ -9,6 +9,7 @@ import * as logger from './logger';
 import * as page from './page';
 import * as queryString from './queryString';
 import * as yup from './yup';
+import uuid from './uuid';
 
 import { buildinfo, delay, fn, isJSON, verdiSomNullable, queryParamsTilObjekt, erPropertyUnik, finnVerdierMedKey } from './utils';
 
@@ -20,6 +21,7 @@ export {
   page,
   queryString,
   yup,
+  uuid,
   // isUndefined as _isUndefined,
   isFunction as _isFunction,
   isNil as _isNil,
