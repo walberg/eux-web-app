@@ -16,7 +16,6 @@ class ArbeidsforholdController extends Component {
     const arbeidsforhold = await Api.Arbeidsforhold.hent(fnr);
     this.setState({ arbeidsforhold });
   };
-
   render() {
     const { arbeidsforhold } = this.state;
     return (
