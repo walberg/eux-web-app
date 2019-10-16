@@ -182,7 +182,7 @@ class FamilieRelasjonController extends Component {
             <p><strong>Person uten registrert relasjon i TPS&nbsp;</strong></p>
           </Nav.Column>
           <Nav.Column xs="2">
-            <Nav.Knapp onClick={this.visSkjulRelatertTPS} >{this.knappeTekstRelatertTPS()}</Nav.Knapp>
+            <Nav.Knapp onClick={this.visSkjulRelatertTPS} data-cy="vis-annenpersonsok-knapp">{this.knappeTekstRelatertTPS()}</Nav.Knapp>
           </Nav.Column>
         </Nav.Row>
         {this.state.ui.visRelatertTPS && <AnnenRelatertTPSPerson

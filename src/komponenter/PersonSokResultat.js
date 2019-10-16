@@ -26,7 +26,7 @@ const PersonSokResultat = props => {
   );
 
   return (
-    <Nav.Panel border className="personsok__kort">
+    <Nav.Panel border className="personsok__kort" data-cy="annenpersonsok-kort">
       <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
       <Nav.Select
         id="id-familirelasjon-rolle"
@@ -34,11 +34,12 @@ const PersonSokResultat = props => {
         bredde="fullbredde"
         className="familierelasjoner__input"
         value={rolle}
-        onChange={oppdaterFamilierelajon}>
+        onChange={oppdaterFamilierelajon}
+        data-cy="annenpersonsok-kort-nedtrekksliste">
         <option value="" disabled>- velg -</option>
         {familierelasjonKodeverk && familierelasjonKodeverk.map(element => <option value={element.kode} key={uuid()}>{element.term}</option>)}
       </Nav.Select>
-      <Nav.Knapp disabled={knappDisabled} onClick={leggTilHandler} className="familierelasjoner__knapp">
+      <Nav.Knapp disabled={knappDisabled} onClick={leggTilHandler} className="familierelasjoner__knapp" data-cy="annenpersonsok-kort-knapp">
         <Eux.Icon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
         <div className="familierelasjoner__knapp__label">Legg til</div>
       </Nav.Knapp>

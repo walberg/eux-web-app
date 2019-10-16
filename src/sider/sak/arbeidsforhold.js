@@ -5,7 +5,7 @@ import ArbeidsforholdListe from './ArbeidsforholdListe';
 
 
 const Arbeidsforhold = props => (
-  <div className="arbeidsforhold">
+  <div className="arbeidsforhold" data-cy="arbeidsforhold-liste">
     <FieldArray name="tilleggsopplysninger.arbeidsforhold" component={ArbeidsforholdListe} props={props} />
   </div>
 );
