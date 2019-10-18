@@ -5,6 +5,9 @@
 
 # testing
 test/coverage
+cypress/videos
+cypress/support
+cypress/screenshots
 
 # production
 /build
