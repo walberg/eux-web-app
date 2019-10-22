@@ -202,7 +202,7 @@ class OpprettSak extends Component {
                   <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
                 </Nav.Column>
                 <Nav.Column xs="2">
-                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
+                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0} data-cy="vis-behandlingstema-knapp">Vis saker</Nav.Knapp>
                 </Nav.Column>
                 <Nav.Column xs="2">
                   <Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
@@ -360,6 +360,6 @@ const validering = values => {
 // mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
-  onSubmit: () => {},
+  onSubmit: () => { },
   validate: validering,
 })(OpprettSak));

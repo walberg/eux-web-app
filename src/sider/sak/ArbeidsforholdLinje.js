@@ -16,7 +16,7 @@ const ArbeidsforholdLinje = props => {
     arbeidsforholdIDnav, navn, orgnr, ansettelsesPeriode: { fom, tom },
   } = arbeidsforholdet;
   return (
-    <Nav.Row>
+    <Nav.Row data-cy="arbeidsforhold-kort">
       <Nav.Column xs="1" style={{ width: '5%' }}>
         <div className="panelheader__ikon" style={{ marginTop: '0.25em', backgroundImage: `url('${Ikoner.Arbeidsforhold}')` }} />
       </Nav.Column>
@@ -24,7 +24,7 @@ const ArbeidsforholdLinje = props => {
         <strong>{navn}</strong><br />Orgnr:&nbsp;{orgnr}<br />StartDato:&nbsp;{formatterDatoTilNorsk(fom)}<br />SluttDato:&nbsp;{formatterDatoTilNorsk(tom)}
       </Nav.Column>
       <Nav.Column xs="1" style={btnStyle} >
-        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsforholdKlikkHandler(arbeidsforholdIDnav)} label="Velg" />
+        <Nav.Checkbox checked={erValgt} onChange={() => arbeidsforholdKlikkHandler(arbeidsforholdIDnav)} label="Velg" data-cy="arbeidsforhold-checkbox" />
       </Nav.Column>
     </Nav.Row>
   );
