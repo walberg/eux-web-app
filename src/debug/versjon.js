@@ -51,7 +51,7 @@ function Versjon() {
         <dt>Build time:</dt><dd>{byggTidspunkt()}</dd>
         <dt>Build version:</dt><dd>{byggVersjon()}</dd>
         <dt>Branch:</dt><dd>{branchVersjon()}</dd>
-        <dt>melosys-kodeverk:</dt><dd>{eessiKodeverk()}</dd>
+        <dt>eessi-kodeverk:</dt><dd>{eessiKodeverk()}</dd>
         <dt>React:</dt><dd>{reactLibVersion()}</dd>
         <dt>&nbsp;</dt><dd />
         <dt>Server</dt><dd />
