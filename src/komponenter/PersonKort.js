@@ -24,10 +24,11 @@ const PersonKort = ({ person }) => {
   );
   return (
     <div>
-      <Nav.Panel className="personsok__kort">
+      <Nav.Panel className="personsok__kort" data-cy="personsok-kort">
         <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn}`} undertittel={panelUndertittel} />
         <Nav.Knapp
           className="familierelasjoner__knapp familierelasjoner__knapp--slett"
+          data-cy="fjern-person-knapp"
           onClick={() => Utils.page.reload()}
         >
           <Eux.Icon kind="trashcan" size="20" className="familierelasjoner__knapp__ikon" />

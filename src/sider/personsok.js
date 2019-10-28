@@ -42,9 +42,10 @@ class PersonSok extends Component {
             label="Finn bruker"
             className="personsok__input"
             feltNavn="fnr"
+            data-cy="personsok-input"
           />
           {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
-          <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson}>SØK</Nav.Knapp>
+          <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson} data-cy="personsok-knapp">SØK</Nav.Knapp>
         </div>
         {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
         {errdata.status && <p>{errdata.message}</p>}

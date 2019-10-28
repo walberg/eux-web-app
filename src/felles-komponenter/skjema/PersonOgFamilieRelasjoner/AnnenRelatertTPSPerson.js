@@ -64,7 +64,7 @@ class AnnenRelatertTPSPerson extends Component {
     if (valgtBrukerFnr === sok) {
       return (
         <Nav.Column xs="3">
-          <Nav.AlertStripe type="info">FNR {sok} tilhører bruker</Nav.AlertStripe>
+          <Nav.AlertStripe type="info" data-cy="annenpersonsok-alert">FNR {sok} tilhører bruker</Nav.AlertStripe>
         </Nav.Column>
       );
     } else if (tpsperson) {
@@ -94,13 +94,30 @@ class AnnenRelatertTPSPerson extends Component {
 
     return (
       <div>
-        <div className="annenpersonsok">
+        <div className="annenpersonsok" data-cy="annenpersonsok">
           <div className="annenpersonsok__skjema">
-            <Nav.Input className="" label="" placeholder="Fødsels eller dnr" value={this.state.sok} onChange={updateSok} />
+            <Nav.Input
+              className=""
+              label=""
+              placeholder="Fødsels eller dnr"
+              value={this.state.sok}
+              onChange={updateSok}
+              data-cy="annenpersonsok-input" />
             {valgtBrukerFnr !== sok ?
-              <Nav.Knapp className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>
+              <Nav.Knapp
+                className="annenpersonsok__knapp"
+                onClick={sokEtterFnr}
+                data-cy="annenpersonsok-knapp">
+                Søk
+              </Nav.Knapp>
               :
-              <Nav.Knapp disabled className="annenpersonsok__knapp" onClick={sokEtterFnr}>Søk</Nav.Knapp>}
+              <Nav.Knapp
+                disabled
+                className="annenpersonsok__knapp"
+                onClick={sokEtterFnr}
+                data-cy="annenpersonsok-knapp">
+                Søk
+              </Nav.Knapp>}
           </div>
         </div>
         {feilmeldingerOgInformasjon(valgtBrukerFnr, tpsperson, notFound400, sok, feiletSok)}
