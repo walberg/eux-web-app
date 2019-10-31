@@ -43,8 +43,8 @@ describe('Behandlingstema', () => {
     });
     it('det er mulig å velge en sak fra fagsakslisten', () => {
       cy.get('#id-fagsaker')
-        .select('awYRK:34243232223')
-        .should('have.value', 'awYRK:34243232223');
+        .select('ubDAG:34243232223')
+        .should('have.value', 'ubDAG:34243232223');
     });
   });
 });
