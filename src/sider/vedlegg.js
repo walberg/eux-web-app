@@ -54,7 +54,8 @@ class Vedlegg extends Component {
                     <Nav.Hovedknapp
                       onClick={handleSubmit(sendSkjema)}
                       disabled={disableSendKnapp || visVenteSpinner}
-                      spinner={visVenteSpinner}>Send vedlegg
+                      spinner={visVenteSpinner}
+                      data-cy="hovedknapp-send-vedlegg">Send vedlegg
                     </Nav.Hovedknapp>
                   </div>
                   <StatusLinje status={vedleggStatus} url={responsLenke} tittel="Vedlegget" />

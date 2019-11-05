@@ -55,7 +55,7 @@ class DokumentSok extends Component {
             feltNavn="rinasaksnummer"
             onKeyUp={inntastetRinaSaksnummerHarBlittEndret}
           />
-          <Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter} spinner={visVenteSpinner}>SØK</Nav.Knapp>
+          <Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter} spinner={visVenteSpinner} data-cy="knapp-sok-rina-saksnummer">SØK</Nav.Knapp>
         </div>
         {dokumentKort}
         {sokeStatus}

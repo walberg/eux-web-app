@@ -222,7 +222,13 @@ class OpprettSak extends Component {
 
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
-                <Nav.Hovedknapp onClick={this.props.handleSubmit(this.skjemaSubmit)} spinner={['PENDING'].includes(status)} disabled={['PENDING'].includes(status)}>Opprett sak i RINA</Nav.Hovedknapp>
+                <Nav.Hovedknapp
+                  onClick={this.props.handleSubmit(this.skjemaSubmit)}
+                  spinner={['PENDING'].includes(status)}
+                  disabled={['PENDING'].includes(status)}
+                  data-cy="opprett-sak-hovedknapp" >
+                  Opprett sak i RINA
+                </Nav.Hovedknapp>
               </Nav.Column>
               <Nav.Column xs="2">
                 <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
