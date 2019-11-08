@@ -12,14 +12,23 @@ import { PersonKort } from '../komponenter/';
 import './personsok.css';
 
 class PersonSok extends Component {
+  state = {
+    sokeerror: null,
+  };
   erPersonFunnet = person => (person.fornavn.length !== undefined && person.fnr !== undefined);
 
   sokEtterPerson = () => {
     const {
       inntastetFnr, settFnrGyldighet, settFnrSjekket, personSok,
     } = this.props;
-    if (inntastetFnr.length === 0) return;
-    personSok(inntastetFnr).then(response => {
+    if (!inntastetFnr || inntastetFnr.length === 0) return;
+    const fnrPattern = /^[0-9]{11}$/;
+    if (!fnrPattern.test(inntastetFnr)) {
+      this.setState({ sokeerror: { message: 'Fnr må ha 11 siffer' } });
+      return;
+    }
+    this.setState({ sokeerror: null });
+    personSok(inntastetFnr.trim()).then(response => {
       if (response && response.data) {
         const person = { ...response.data };
         settFnrGyldighet(this.erPersonFunnet(person));
@@ -47,6 +56,7 @@ class PersonSok extends Component {
           {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson} data-cy="personsok-knapp">SØK</Nav.Knapp>
         </div>
+        {this.state.sokeerror && <p>{this.state.sokeerror.message}</p>}
         {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
         {errdata.status && <p>{errdata.message}</p>}
         {personKort}
@@ -78,7 +88,7 @@ const mapStateToProps = state => ({
   errdata: PersonSelectors.errorDataSelector(state),
 });
 const mapDispatchToProps = dispatch => ({
-  personSok: fnr => dispatch(PersonOperations.hentPerson(fnr)),
+  personSok: fnr => dispatch(PersonOperations.hentPerson(fnr.trim())),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonSok);
