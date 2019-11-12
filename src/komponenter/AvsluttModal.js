@@ -4,12 +4,11 @@ import { Hovedknapp, Column, Row, Container, Modal, Undertittel, Normaltekst } f
 
 import './avsluttModal.css';
 
-Modal.setAppElement('#root');
-
 const avsluttModal = props => {
   const { visModal, closeModal } = props;
   return (
     <Modal
+      ariaHideApp={false}
       isOpen={visModal}
       onRequestClose={() => closeModal()}
       closeButton={false}
@@ -18,7 +17,7 @@ const avsluttModal = props => {
       <div className="modal__innhold">
         <Container align="center" fluid>
           <Row className="modal__overskrift">
-            <Undertittel> Er du sikker på at du vil avbryte? </Undertittel>
+            <Undertittel>Er du sikker på at du vil avbryte?</Undertittel>
           </Row >
           <Row className="modal__tekst">
             <Normaltekst>Informasjonen du har fyllt inn hittil vil ikke bli lagret.</Normaltekst>
