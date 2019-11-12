@@ -71,7 +71,7 @@
     "react-dom": "^16.10.2",
     "react-highcharts": "^16.1.0",
     "react-maskedinput": "^4.0.1",
-    "react-modal": "^3.8.2",
+    "react-modal": "^3.10.1",
     "react-motion": "^0.5.2",
     "react-on-screen": "^2.1.1",
     "react-pdf": "^4.1.0",
