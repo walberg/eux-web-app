@@ -26,11 +26,11 @@ const avsluttModal = props => {
             <Column xs="6">
               {/* Hack for å bruke en nav-knapp som lenke */}
               <a href="/" tabIndex="-1">
-                <Hovedknapp className="modal__knapp">JA, AVBRYT</Hovedknapp>
+                <Hovedknapp className="modal__knapp" data-cy="avbryt-modal-hovedknapp">JA, AVBRYT</Hovedknapp>
               </a>
             </Column >
             <Column xs="6">
-              <Hovedknapp className="modal__knapp" onClick={closeModal}>NEI, FORTSETT</Hovedknapp>
+              <Hovedknapp className="modal__knapp" onClick={closeModal} data-cy="fortsett-modal-hovedknapp">NEI, FORTSETT</Hovedknapp>
             </Column >
           </Row>
         </Container>
