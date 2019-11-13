@@ -1,13 +1,13 @@
 import React from 'react';
 import PT from 'prop-types';
-import { Hovedknapp, Column, Row, Container, Modal, Undertittel, Normaltekst } from '../utils/navFrontend';
+import * as Nav from '../utils/navFrontend';
 
 import './avsluttModal.css';
 
-const avsluttModal = props => {
+const AvsluttModal = props => {
   const { visModal, closeModal } = props;
   return (
-    <Modal
+    <Nav.Modal
       ariaHideApp={false}
       isOpen={visModal}
       onRequestClose={() => closeModal()}
@@ -15,33 +15,33 @@ const avsluttModal = props => {
       contentLabel="Bekreft navigasjon tilbake til forsiden"
     >
       <div className="modal__innhold">
-        <Container align="center" fluid>
-          <Row className="modal__overskrift">
-            <Undertittel>Er du sikker på at du vil avbryte?</Undertittel>
-          </Row >
-          <Row className="modal__tekst">
-            <Normaltekst>Informasjonen du har fyllt inn hittil vil ikke bli lagret.</Normaltekst>
-          </Row>
-          <Row>
-            <Column xs="6">
+        <Nav.Container align="center" fluid>
+          <Nav.Row className="modal__overskrift">
+            <Nav.Undertittel>Er du sikker på at du vil avbryte?</Nav.Undertittel>
+          </Nav.Row >
+          <Nav.Row className="modal__tekst">
+            <Nav.Normaltekst>Informasjonen du har fyllt inn hittil vil ikke bli lagret.</Nav.Normaltekst>
+          </Nav.Row>
+          <Nav.Row>
+            <Nav.Column xs="6">
               {/* Hack for å bruke en nav-knapp som lenke */}
               <a href="/" tabIndex="-1">
-                <Hovedknapp className="modal__knapp" data-cy="avbryt-modal-hovedknapp">JA, AVBRYT</Hovedknapp>
+                <Nav.Hovedknapp className="modal__knapp" data-cy="avbryt-modal-hovedknapp">JA, AVBRYT</Nav.Hovedknapp>
               </a>
-            </Column >
-            <Column xs="6">
-              <Hovedknapp className="modal__knapp" onClick={closeModal} data-cy="fortsett-modal-hovedknapp">NEI, FORTSETT</Hovedknapp>
-            </Column >
-          </Row>
-        </Container>
+            </Nav.Column >
+            <Nav.Column xs="6">
+              <Nav.Hovedknapp className="modal__knapp" onClick={closeModal} data-cy="fortsett-modal-hovedknapp">NEI, FORTSETT</Nav.Hovedknapp>
+            </Nav.Column >
+          </Nav.Row>
+        </Nav.Container>
       </div >
-    </Modal>
+    </Nav.Modal>
   );
 };
 
-avsluttModal.propTypes = {
+AvsluttModal.propTypes = {
   visModal: PT.bool.isRequired,
   closeModal: PT.func.isRequired,
 };
 
-export default avsluttModal;
+export default AvsluttModal;
