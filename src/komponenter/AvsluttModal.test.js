@@ -21,7 +21,7 @@ describe(('DokumentKort Test Suite'), () => {
     it('mounter Modal med korrekte props', () => {
       const component = wrapper.find(Nav.Modal);
       expect(component).toHaveLength(1);
-      expect(component.props().isOpen).toEqual(false);
+      expect(component.props().isOpen).toBeFalsy();
       expect(typeof (component.props().onRequestClose)).toEqual('function');
       expect(component.props()).toHaveProperty('contentLabel', 'Bekreft navigasjon tilbake til forsiden');
     });
