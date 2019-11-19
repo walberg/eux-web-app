@@ -13,6 +13,7 @@ import { StatusLinje } from '../felles-komponenter/statuslinje';
 import PersonSok from './personsok';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
+import AvsluttModal from '../komponenter/AvsluttModal';
 
 
 const initialStore = createStore();
@@ -35,6 +36,7 @@ describe(('Opprettsak Test Suite'), () => {
         tema: '',
         fagsaker: [],
         saksID: '',
+        visModal: false,
       });
     });
   });
@@ -242,17 +244,16 @@ describe(('Opprettsak Test Suite'), () => {
         const component = wrapper.find(Nav.Knapp);
         expect(component).toHaveLength(0);
       });
-      // TODO lenker trenger css id
       it('Lenke vises hvis sektor er valgt', () => {
         wrapper.setProps({ valgtSektor: 'FB' });
         const component = wrapper.find(Nav.Lenke);
-        expect(component).toHaveLength(2);
-        expect(component.at(0).props()).toHaveProperty('ariaLabel', 'Opprett ny sak i GOSYS');
+        expect(component).toHaveLength(1);
+        expect(component.props()).toHaveProperty('ariaLabel', 'Opprett ny sak i GOSYS');
       });
       it('Lenke vises ikke hvis !sektor', () => {
         wrapper.setProps({ valgtSektor: undefined });
         const component = wrapper.find(Nav.Lenke);
-        expect(component).toHaveLength(1);
+        expect(component).toHaveLength(0);
       });
     });
     describe('Fagsaker', () => {
@@ -289,12 +290,11 @@ describe(('Opprettsak Test Suite'), () => {
       expect(component.props()).toHaveProperty('disabled', true);
       expect(handleSubmit).toHaveBeenCalledTimes(1);
     });
-    it('Lenke vises med props', () => {
-      wrapper.setProps({ valgtSektor: 'FB' });
-      const component = wrapper.find(Nav.Lenke);
-      expect(component).toHaveLength(2);
-      expect(component.at(1).props()).toHaveProperty('href', '/');
-      expect(component.at(1).props()).toHaveProperty('ariaLabel', 'Navigasjonslink tilbake til forsiden');
+    it('Flatknapp vises med props', () => {
+      const component = wrapper.find(Nav.Flatknapp);
+      expect(component).toHaveLength(1);
+      expect(typeof (component.props().onClick)).toEqual('function');
+      expect(component.props()).toHaveProperty('aria-label', 'Navigasjonslink tilbake til forsiden');
     });
     it('viser StatusLinje med props', () => {
       wrapper.setProps({ opprettetSak: { rinasaksnummer: '6969', url: 'www.www.www' } });
@@ -310,6 +310,15 @@ describe(('Opprettsak Test Suite'), () => {
       const component = (wrapper.find('p'));
       expect(component).toHaveLength(1);
       expect(component.children().text()).toEqual('det brenner');
+    });
+  });
+  describe('Avslutt Modal', () => {
+    it('mountes med korrekte props', () => {
+      wrapper.setState({ visModal: true });
+      const component = (wrapper.find(AvsluttModal));
+      expect(component).toHaveLength(1);
+      expect(component.props()).toHaveProperty('visModal', true);
+      expect(typeof (component.props().closeModal)).toEqual('function');
     });
   });
 
@@ -473,6 +482,18 @@ describe(('Opprettsak Test Suite'), () => {
         expect(settFnrGyldighet).toHaveBeenCalledWith(null);
         expect(settFnrSjekket).toHaveBeenCalledTimes(1);
         expect(settFnrSjekket).toHaveBeenCalledWith(false);
+      });
+    });
+    describe('Modal', () => {
+      it('openModal - setter korrekt state', () => {
+        wrapper.setState({ visModal: false });
+        wrapper.instance().openModal();
+        expect(wrapper.state()).toHaveProperty('visModal', true);
+      });
+      it('closeModal - setter korrekt state', () => {
+        wrapper.setState({ visModal: true });
+        wrapper.instance().closeModal();
+        expect(wrapper.state()).toHaveProperty('visModal', false);
       });
     });
   });
