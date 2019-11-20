@@ -3,9 +3,8 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 
 import createStore from '../store';
-import diveUntillTarget from '../../test/utils';
 
-import Vedlegg from './vedlegg';
+import { Vedlegg } from './vedlegg';
 import * as queryString from '../utils/queryString';
 import * as Nav from '../utils/navFrontend';
 import DokumentSok from './dokumentsok';
@@ -21,7 +20,16 @@ let wrapper;
 describe(('Vedlegg Test Suite'), () => {
   beforeEach(() => {
     store = mockStore(initialStore.getState());
-    wrapper = diveUntillTarget(shallow(<Vedlegg store={store} location={{}} />), 'Vedlegg');
+    wrapper = shallow(<Vedlegg
+      store={store}
+      location={{}}
+      settRinaGyldighet={() => { }}
+      settRinaSjekket={() => { }}
+      vedleggStatus=""
+      handleSubmit={() => { }}
+      sendSkjema={() => { }}
+      oppdaterRinaSaksnummer={() => { }}
+    />);
   });
   describe('Logikk', () => {
     describe('componentDidMount', () => {

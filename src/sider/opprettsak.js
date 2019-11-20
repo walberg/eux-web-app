@@ -44,7 +44,7 @@ const initalState = {
   visModal: false,
 };
 
-class OpprettSak extends Component {
+export class OpprettSak extends Component {
   state = {
     ...initalState,
   };

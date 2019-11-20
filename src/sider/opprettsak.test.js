@@ -3,11 +3,10 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 
 import createStore from '../store';
-import diveUntillTarget from '../../test/utils';
 import mockData from '../../test/opprettsakMockData';
 
 import * as Api from '../services/api';
-import OpprettSak from './opprettsak';
+import { OpprettSak } from './opprettsak';
 import * as Nav from '../utils/navFrontend';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import PersonSok from './personsok';
@@ -24,7 +23,19 @@ let wrapper;
 describe(('Opprettsak Test Suite'), () => {
   beforeEach(() => {
     store = mockStore(initialStore.getState());
-    wrapper = diveUntillTarget(shallow(<OpprettSak store={store} />), 'OpprettSak');
+    wrapper = shallow(<OpprettSak
+      store={store}
+      serverInfo={{}}
+      validerFnrRiktig={() => { }}
+      validerFnrFeil={() => { }}
+      handleSubmit={() => { }}
+      sendSkjema={() => { }}
+      settFnrGyldighet={() => { }}
+      settFnrSjekket={() => { }}
+      settBuctype={() => { }}
+      hentLandkoder={() => { }}
+      submitFailed={false}
+    />);
   });
 
   describe('Variabler', () => {
@@ -300,7 +311,7 @@ describe(('Opprettsak Test Suite'), () => {
       wrapper.setProps({ opprettetSak: { rinasaksnummer: '6969', url: 'www.www.www' } });
       const component = (wrapper.find(StatusLinje));
       expect(component).toHaveLength(1);
-      expect(component.props()).toHaveProperty('status', 'NOT_STARTED');
+      expect(component.props()).toHaveProperty('status', '');
       expect(component.props()).toHaveProperty('tittel', 'Saksnummer: 6969');
       expect(component.props()).toHaveProperty('rinaURL', 'www.www.www');
       expect(component.props()).toHaveProperty('routePath', '/vedlegg?rinasaksnummer=6969');
