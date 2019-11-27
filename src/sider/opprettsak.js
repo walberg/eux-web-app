@@ -384,6 +384,8 @@ const validering = values => {
   };
 };
 
+export { OpprettSak as OpprettSakJest };
+
 // mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',

@@ -4,7 +4,7 @@ import configureStore from 'redux-mock-store';
 
 import createStore from '../store';
 
-import { Vedlegg } from './vedlegg';
+import { VedleggJest } from './vedlegg';
 import * as queryString from '../utils/queryString';
 import * as Nav from '../utils/navFrontend';
 import DokumentSok from './dokumentsok';
@@ -20,7 +20,7 @@ let wrapper;
 describe(('Vedlegg Test Suite'), () => {
   beforeEach(() => {
     store = mockStore(initialStore.getState());
-    wrapper = shallow(<Vedlegg
+    wrapper = shallow(<VedleggJest
       store={store}
       location={{}}
       settRinaGyldighet={() => { }}

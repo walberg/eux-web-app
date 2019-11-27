@@ -14,7 +14,7 @@ import { RinavedleggOperations, RinavedleggSelectors } from '../ducks/rinavedleg
 import { getParam } from '../utils/queryString';
 import './vedlegg.css';
 
-export class Vedlegg extends Component {
+class Vedlegg extends Component {
   componentDidMount() {
     const { location, oppdaterRinaSaksnummer } = this.props;
     const rinasaksnummer = getParam(location, 'rinasaksnummer');
@@ -138,4 +138,7 @@ const form = {
     };
   },
 };
+
+export { Vedlegg as VedleggJest };
+
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm(form)(Vedlegg));

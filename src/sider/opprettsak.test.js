@@ -6,7 +6,7 @@ import createStore from '../store';
 import mockData from '../../test/opprettsakMockData';
 
 import * as Api from '../services/api';
-import { OpprettSak } from './opprettsak';
+import { OpprettSakJest } from './opprettsak';
 import * as Nav from '../utils/navFrontend';
 import { StatusLinje } from '../felles-komponenter/statuslinje';
 import PersonSok from './personsok';
@@ -23,7 +23,7 @@ let wrapper;
 describe(('Opprettsak Test Suite'), () => {
   beforeEach(() => {
     store = mockStore(initialStore.getState());
-    wrapper = shallow(<OpprettSak
+    wrapper = shallow(<OpprettSakJest
       store={store}
       serverInfo={{}}
       validerFnrRiktig={() => { }}
