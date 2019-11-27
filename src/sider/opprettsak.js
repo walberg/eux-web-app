@@ -243,7 +243,9 @@ export class OpprettSak extends Component {
                 <Nav.Hovedknapp
                   disabled={!redigerbart || ['PENDING'].includes(status)}
                   onClick={this.props.handleSubmit(this.skjemaSubmit)}
-                  spinner={['PENDING'].includes(status)}>Opprett sak i RINA
+                  spinner={['PENDING'].includes(status)}
+                  data-cy="opprett-sak-hovedknapp" >
+                  Opprett sak i RINA
                 </Nav.Hovedknapp>
               </Nav.Column>
               <Nav.Column xs="3">
