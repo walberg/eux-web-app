@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Medlemsskap og lovvalgssystem",
   "author": {
     "name": "are.bjolseth@nav.no"
@@ -15,7 +15,7 @@
     "@loadable/component": "^5.10.2",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
-    "eessi-kodeverk": "1.4.0",
+    "eessi-kodeverk": "1.4.2",
     "history": "^4.10.1",
     "lodash": "^4.17.15",
     "lodash.throttle": "^4.1.1",
@@ -185,5 +185,5 @@
       }
     }
   },
-  "_id": "neessi@1.0.0"
+  "_id": "neessi@1.1.0"
 }

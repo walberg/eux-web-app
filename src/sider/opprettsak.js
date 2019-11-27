@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector, clearAsyncError, stopSubmit, change } from 'redux-form';
 import PT from 'prop-types';
+import _ from 'lodash';
 
 import * as EKV from 'eessi-kodeverk';
 import * as Api from '../services/api';
@@ -20,6 +21,7 @@ import PersonSok from './personsok';
 
 import './opprettsak.css';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
+import AvsluttModal from '../komponenter/AvsluttModal';
 
 const uuid = require('uuid/v4');
 
@@ -39,6 +41,7 @@ const initalState = {
   tema: '',
   fagsaker: [],
   saksID: '',
+  visModal: false,
 };
 
 class OpprettSak extends Component {
@@ -100,7 +103,6 @@ class OpprettSak extends Component {
     };
     delete vaskedeVerdier.fnrErGyldig;
     delete vaskedeVerdier.fnrErSjekket;
-
     sendSkjema(vaskedeVerdier);
   };
 
@@ -127,22 +129,38 @@ class OpprettSak extends Component {
     settFnrSjekket(false);
   };
 
+  openModal = () => {
+    this.setState({ visModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ visModal: false });
+  };
+
   render() {
     const {
       serverInfo,
-      landkoder, sedtyper, sektor, buctyper, temar,
+      landkoder, sedtyper, sektor, buctype, buctyper, temar,
       inntastetFnr, status, errdata,
-      valgtSektor,
+      valgtSektor, sedtype,
       settFnrSjekket, settFnrGyldighet,
       fnrErGyldig, fnrErSjekket,
       opprettetSak,
     } = this.props;
 
-    const { institusjoner } = this.state;
+    const { institusjoner, visModal } = this.state;
 
     const { rinasaksnummer, url: responsLenke } = opprettetSak;
     const vedleggRoute = `/vedlegg?rinasaksnummer=${rinasaksnummer}`;
-    const { resettSokStatus } = this;
+    const { resettSokStatus, openModal, closeModal } = this;
+
+    const erFagomroedeValgt = valgtSektor && valgtSektor.length > 0;
+    const erBUCValgt = !_.isNil(buctype);
+    const erSEDValgt = !_.isNil(sedtype);
+    const erLandValgt = this.state.landKode.length > 0;
+    const erMottakerInstitusjonValgt = this.state.institusjonsID.length > 0;
+    const erFagsakValgt = this.state.saksID.length > 0;
+    const redigerbart = erFagomroedeValgt && erBUCValgt && erSEDValgt && erLandValgt && erMottakerInstitusjonValgt && erFagsakValgt;
 
     const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
     return (
@@ -223,17 +241,17 @@ class OpprettSak extends Component {
             <Nav.Row className="opprettsak__statuslinje">
               <Nav.Column xs="3">
                 <Nav.Hovedknapp
+                  disabled={!redigerbart || ['PENDING'].includes(status)}
                   onClick={this.props.handleSubmit(this.skjemaSubmit)}
                   spinner={['PENDING'].includes(status)}
-                  disabled={['PENDING'].includes(status)}
                   data-cy="opprett-sak-hovedknapp" >
                   Opprett sak i RINA
                 </Nav.Hovedknapp>
               </Nav.Column>
-              <Nav.Column xs="2">
-                <Nav.Lenke href="/" ariaLabel="Navigasjonslink tilbake til forsiden">
-                  AVSLUTT
-                </Nav.Lenke>
+              <Nav.Column xs="3">
+                <Nav.Flatknapp aria-label="Navigasjonslink tilbake til forsiden" onClick={() => openModal()} >
+                  AVSLUTT UTFYLLING
+                </Nav.Flatknapp>
               </Nav.Column>
             </Nav.Row>
             <Nav.Row>
@@ -244,6 +262,10 @@ class OpprettSak extends Component {
             </Nav.Row>
           </Nav.Container>
         </form>
+        <AvsluttModal
+          visModal={visModal}
+          closeModal={closeModal}
+        />
       </div>
     );
   }
@@ -345,8 +367,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const validering = values => {
-  const fnr = !values.fnr ? 'Du må taste inn fødselsnummer.' : null;
-  const fnrErUgyldig = (values.fnrErGyldig === false && values.fnrErSjekket) ? 'Fødselsnummeret er ikke gyldig.' : null;
+  // const { fnr, sektor, sedtype, land, institusjonsID } = values;
+  const fnrValidNumberMsg = _.isNumber(values.fnr) ? 'Du må taste inn fødselsnummer.' : null;
+  // const fnrErUgyldig = (values.fnrErGyldig === false && values.fnrErSjekket) ? 'Fødselsnummeret er ikke gyldig.' : null;
   const sektor = !values.sektor ? 'Du må velge sektor.' : null;
   const buctype = !values.buctype ? 'Du må velge buctype.' : null;
   const sedtype = !values.sedtype ? 'Du må velge sedtype.' : null;
@@ -354,7 +377,7 @@ const validering = values => {
   const institusjonsID = !values.institusjonsID ? 'Du må velge institusjon.' : null;
 
   return {
-    fnr: fnr || fnrErUgyldig,
+    fnr: fnrValidNumberMsg, // || fnrErUgyldig,
     sektor,
     buctype,
     sedtype,
