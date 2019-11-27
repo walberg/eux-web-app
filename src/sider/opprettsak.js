@@ -44,7 +44,7 @@ const initalState = {
   visModal: false,
 };
 
-class OpprettSak extends Component {
+export class OpprettSak extends Component {
   state = {
     ...initalState,
   };
@@ -383,6 +383,8 @@ const validering = values => {
     institusjonsID,
   };
 };
+
+export { OpprettSak as OpprettSakJest };
 
 // mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({

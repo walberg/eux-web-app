@@ -138,4 +138,7 @@ const form = {
     };
   },
 };
+
+export { Vedlegg as VedleggJest };
+
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm(form)(Vedlegg));
