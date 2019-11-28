@@ -20,9 +20,6 @@ describe('Schema submit med korrekte felter', () => {
     cy.get('#id-sektor')
       .select('FB');
 
-    cy.get('.knapp.knapp--hoved')
-      .click();
-
     cy.get('#id-buctype')
       .select('FB_BUC_01');
 
