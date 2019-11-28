@@ -34,9 +34,9 @@ class FamilieRelasjonController extends Component {
   kanSpesialRelasjonLeggesTil = () => {
     const { spesialRelasjon } = this.state;
     const {
-      fnr, rolle, nasjonalitet, kjoenn, fornavn, etternavn,
+      fnr, rolle, nasjonalitet, kjoenn, fornavn, etternavn, fdato,
     } = spesialRelasjon;
-    return (fnr && rolle && nasjonalitet && kjoenn && fornavn && etternavn);
+    return (fnr && rolle && nasjonalitet && kjoenn && fornavn && etternavn && fdato);
   };
 
   resettSpesialRelasjonsFelter = () => {
