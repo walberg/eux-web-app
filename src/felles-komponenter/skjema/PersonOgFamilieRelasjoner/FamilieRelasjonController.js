@@ -83,6 +83,11 @@ class FamilieRelasjonController extends Component {
     this.setState({ spesialRelasjon: { ...this.state.spesialRelasjon, [felt]: value } });
   };
 
+  oppdaterStateMedTrim = (felt, event) => {
+    const { value } = event.currentTarget;
+    this.setState({ spesialRelasjon: { ...this.state.spesialRelasjon, [felt]: value ? value.trim() : '' } });
+  };
+
   vaskInputDatoOgOppdater = (felt, event) => {
     const { value } = event.currentTarget;
     const nyDato = vaskInputDato(value) || '';
@@ -167,6 +172,7 @@ class FamilieRelasjonController extends Component {
         {this.state.ui.visRelatertUtland && <FamilieRelasjonUtland
           spesialRelasjon={this.state.spesialRelasjon}
           oppdaterState={this.oppdaterState}
+          oppdaterStateMedTrim={this.oppdaterStateMedTrim}
           kjoennKodeverk={kjoennKodeverk}
           landKodeverk={landKodeverk}
           filtrerteFamilieRelasjoner={this.filtrerRoller}
