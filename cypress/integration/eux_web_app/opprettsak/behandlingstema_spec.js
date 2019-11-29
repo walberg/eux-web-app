@@ -8,7 +8,7 @@ describe('Behandlingstema', () => {
       .type('{enter}');
 
     cy.get('#id-sektor')
-      .select('AW');
+      .select('UB');
   });
   it('behandlingstema-komponent vises hvis sektor er valgt', () => {
     cy.get('#id-behandlings-tema')
@@ -43,8 +43,8 @@ describe('Behandlingstema', () => {
     });
     it('det er mulig å velge en sak fra fagsakslisten', () => {
       cy.get('#id-fagsaker')
-        .select('ubDAG:34243232223')
-        .should('have.value', 'ubDAG:34243232223');
+        .select('ubGEN:a2873465')
+        .should('have.value', 'ubGEN:a2873465');
     });
   });
 });

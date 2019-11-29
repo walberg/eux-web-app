@@ -85,7 +85,7 @@ describe('Schema submit med korrekte felter', () => {
       .click();
 
     cy.get('#id-fagsaker')
-      .select('ubDAG:34243232223');
+      .select('fbGEN:73465');
 
     cy.get('[data-cy=opprett-sak-hovedknapp]')
       .click().click();
