@@ -54,17 +54,12 @@ node {
 
   stage('npm install ') {
 
-    environment { 
-      HTTP_PROXY  = 'http://webproxy-utvikler.nav.no:8088/'
-      HTTPS_PROXY = 'http://webproxy-utvikler.nav.no:8088/'
-    }
-
     echo('Step: npm install package depenencies')
     sh "printenv"
     sh "${node} -v"
     sh "${npm} -v"
     sh "${npm} config ls"
-    sh "${npm} install"
+    sh "CYPRESS_INSTALL_BINARY=0 ${npm} install"
 
     semver = sh(returnStdout: true, script: "node -pe \"require('./package.json').version\"").trim()
     echo("semver=*${semver}*")
