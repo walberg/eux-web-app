@@ -5,6 +5,11 @@ properties([[$class: 'BuildDiscarderProperty',
 			 strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '',
 			            daysToKeepStr: '', numToKeepStr: '5']]])
 
+environment { 
+    HTTP_PROXY = 'http://webproxy-utvikler.nav.no:8088/'
+    HTTPS_PROXY = 'http://webproxy-utvikler.nav.no:8088/'
+}
+
 node {
   def project = "navikt"
   def application = "eux-web-app"
