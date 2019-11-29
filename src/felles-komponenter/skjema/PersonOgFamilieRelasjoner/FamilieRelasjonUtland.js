@@ -10,7 +10,7 @@ import './familierelasjoner.css';
 const uuid = require('uuid/v4');
 
 const FamilieRelasjonUtland = ({
-  spesialRelasjon, oppdaterState,
+  spesialRelasjon, oppdaterState, oppdaterStateMedTrim,
   kjoennKodeverk, landKodeverk, filtrerteFamilieRelasjoner,
   leggTilSpesialRelasjon, vaskInputDatoOgOppdater, kanSpesialRelasjonLeggesTil,
 }) =>
@@ -28,7 +28,7 @@ const FamilieRelasjonUtland = ({
                 className="familierelasjoner__input"
                 bredde="fullbredde"
                 value={spesialRelasjon.fnr}
-                onChange={event => oppdaterState('fnr', event)}
+                onChange={event => oppdaterStateMedTrim('fnr', event)}
                 data-cy="utenlandsk-id-input" />
             </Nav.Column>
             <Nav.Column xs="3">
@@ -124,6 +124,7 @@ const FamilieRelasjonUtland = ({
 FamilieRelasjonUtland.propTypes = {
   spesialRelasjon: PT.object.isRequired,
   oppdaterState: PT.func.isRequired,
+  oppdaterStateMedTrim: PT.func.isRequired,
   filtrerteFamilieRelasjoner: PT.func.isRequired,
   kjoennKodeverk: PT.arrayOf(MPT.Kodeverk),
   landKodeverk: PT.arrayOf(MPT.Kodeverk),
