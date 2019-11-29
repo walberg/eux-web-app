@@ -57,11 +57,10 @@ node {
     environment { 
       HTTP_PROXY  = 'http://webproxy-utvikler.nav.no:8088/'
       HTTPS_PROXY = 'http://webproxy-utvikler.nav.no:8088/'
-      ALL_PROXY   = 'socks://http://webproxy-utvikler.nav.no:8088/'
-
     }
 
     echo('Step: npm install package depenencies')
+    sh "printenv"
     sh "${node} -v"
     sh "${npm} -v"
     sh "${npm} config ls"
