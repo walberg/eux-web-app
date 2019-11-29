@@ -44,7 +44,7 @@ const initalState = {
   visModal: false,
 };
 
-class OpprettSak extends Component {
+export class OpprettSak extends Component {
   state = {
     ...initalState,
   };
@@ -220,7 +220,7 @@ class OpprettSak extends Component {
                   <BehandlingsTemaer temaer={temar} tema={this.state.tema} oppdaterTemaListe={this.oppdaterTemaListe} />
                 </Nav.Column>
                 <Nav.Column xs="2">
-                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0}>Vis saker</Nav.Knapp>
+                  <Nav.Knapp style={btnStyle} onClick={this.visFagsaker} disabled={this.state.tema.length === 0} data-cy="vis-behandlingstema-knapp">Vis saker</Nav.Knapp>
                 </Nav.Column>
                 <Nav.Column xs="2">
                   <Nav.Lenke href={serverInfo.gosysURL} ariaLabel="Opprett ny sak i GOSYS" target="_blank">
@@ -243,7 +243,9 @@ class OpprettSak extends Component {
                 <Nav.Hovedknapp
                   disabled={!redigerbart || ['PENDING'].includes(status)}
                   onClick={this.props.handleSubmit(this.skjemaSubmit)}
-                  spinner={['PENDING'].includes(status)}>Opprett sak i RINA
+                  spinner={['PENDING'].includes(status)}
+                  data-cy="opprett-sak-hovedknapp" >
+                  Opprett sak i RINA
                 </Nav.Hovedknapp>
               </Nav.Column>
               <Nav.Column xs="3">
@@ -384,9 +386,11 @@ const validering = values => {
   };
 };
 
+export { OpprettSak as OpprettSakJest };
+
 // mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'opprettSak',
-  onSubmit: () => {},
+  onSubmit: () => { },
   validate: validering,
 })(OpprettSak));

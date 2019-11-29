@@ -16,17 +16,16 @@ class ArbeidsforholdController extends Component {
     const arbeidsforhold = await Api.Arbeidsforhold.hent(fnr);
     this.setState({ arbeidsforhold });
   };
-
   render() {
     const { arbeidsforhold } = this.state;
     return (
-      <div className="arbeidsforhold">
+      <div className="arbeidsforhold" data-cy="arbeidsforhold">
         <Nav.Row>
           <Nav.Column xs="3">
             <strong>AA Registeret</strong><br />Arbeidsforhold/Arbeidsgivere
           </Nav.Column>
           <Nav.Column xs="2">
-            <Nav.Knapp onClick={this.hentArbeidsforhold}>Søk</Nav.Knapp>
+            <Nav.Knapp onClick={this.hentArbeidsforhold} data-cy="vis-arbeidsforhold-knapp">Søk</Nav.Knapp>
           </Nav.Column>
         </Nav.Row>
         <Nav.Row>

@@ -54,7 +54,8 @@ class Vedlegg extends Component {
                     <Nav.Hovedknapp
                       onClick={handleSubmit(sendSkjema)}
                       disabled={disableSendKnapp || visVenteSpinner}
-                      spinner={visVenteSpinner}>Send vedlegg
+                      spinner={visVenteSpinner}
+                      data-cy="hovedknapp-send-vedlegg">Send vedlegg
                     </Nav.Hovedknapp>
                   </div>
                   <StatusLinje status={vedleggStatus} url={responsLenke} tittel="Vedlegget" />
@@ -124,7 +125,7 @@ const form = {
   form: 'vedlegg',
   enableReinitialize: true,
   destroyOnUnmount: true,
-  onSubmit: () => {},
+  onSubmit: () => { },
   validate: values => {
     const journalpostID = journalpostValidation(values.journalpostID);
     const dokumentID = !values.dokumentID ? 'Du må taste inn en dokumentID' : null;
@@ -138,4 +139,7 @@ const form = {
     };
   },
 };
+
+export { Vedlegg as VedleggJest };
+
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm(form)(Vedlegg));

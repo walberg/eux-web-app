@@ -1,30 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PT from 'prop-types';
-import moment from 'moment/moment';
 
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import * as API from '../services/api';
 import { DokumenterSelectors } from '../ducks/dokumenter';
+import { DokumentKort } from '../komponenter';
 
 import './dokumentsok.css';
 
-const yyyMMdd = dato => moment(dato).format('YYYY-MM-DD');
 
-const DokumentKort = ({ dokumenter }) => (
-  <Nav.Panel className="dokumentsok__kort">
-    <Skjema.Select id="id-rinadokument" feltNavn="rinadokumentID" label="Velg SED Type" bredde="xl">
-      {dokumenter && dokumenter.map(element => <option value={element.rinadokumentID} key={element.rinadokumentID}>{element.kode} =&gt; {yyyMMdd(element.opprettetdato)}</option>)}
-    </Skjema.Select>
-  </Nav.Panel>
-);
-DokumentKort.propTypes = {
-  dokumenter: PT.array,
-};
-DokumentKort.defaultProps = {
-  dokumenter: [],
-};
 class DokumentSok extends Component {
   state = {
     searching: false,
@@ -40,7 +26,6 @@ class DokumentSok extends Component {
         nyttSok: true,
         rinadokumenter: response,
       });
-
       settRinaSjekket(true);
       if (response.length > 0) {
         settRinaGyldighet(true);
@@ -70,7 +55,7 @@ class DokumentSok extends Component {
             feltNavn="rinasaksnummer"
             onKeyUp={inntastetRinaSaksnummerHarBlittEndret}
           />
-          <Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter} spinner={visVenteSpinner}>SØK</Nav.Knapp>
+          <Nav.Knapp className="dokumentsok__knapp" onClick={sokEtterDokumenter} spinner={visVenteSpinner} data-cy="knapp-sok-rina-saksnummer">SØK</Nav.Knapp>
         </div>
         {dokumentKort}
         {sokeStatus}

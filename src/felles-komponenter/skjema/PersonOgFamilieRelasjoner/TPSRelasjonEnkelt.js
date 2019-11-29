@@ -21,9 +21,9 @@ const TPSRelasjonEnkelt = ({ kodeverk, relasjon, leggTilTPSrelasjon }) => {
   );
 
   return (
-    <Nav.Panel border className="personsok__kort">
+    <Nav.Panel border className="personsok__kort" data-cy="tpsrelasjon-kort">
       <PanelHeader ikon={Eux.IkonFraKjonn(kjoenn)} tittel={`${fornavn} ${etternavn} - ${rolle}`} undertittel={panelUndertittel} />
-      <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp">
+      <Nav.Knapp onClick={() => leggTilTPSrelasjon(relasjon)} className="familierelasjoner__knapp" data-cy="legg-til-tpsrelasjon-knapp">
         <Eux.Icon kind="tilsette" size="20" className="familierelasjoner__knapp__ikon" />
         <div className="familierelasjoner__knapp__label">Legg til</div>
       </Nav.Knapp>

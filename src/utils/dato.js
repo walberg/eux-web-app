@@ -106,13 +106,18 @@ function erIPeriode(fom, tom, dato) {
   return moment(dato).isBetween(fom, tom);
 }
 
-function datoDiff (fom, tom, enhet = 'months', presis = true) {
+function datoDiff(fom, tom, enhet = 'months', presis = true) {
   if (!moment(fom, 'YYYY-MM-DD').isValid() || !moment(tom, 'YYYY-MM-DD').isValid()) return false;
   const momentTom = moment(tom).add(1, 'day');
   return moment(momentTom).diff(fom, enhet, presis);
 }
 
-function datoDiffMenneskelig (fom, tom) {
+function datoDiffPure(fom, tom, enhet = 'months', presis = true) {
+  if (!moment(fom, 'YYYY-MM-DD').isValid() || !moment(tom, 'YYYY-MM-DD').isValid()) return false;
+  return moment(fom).diff(tom, enhet, presis);
+}
+
+function datoDiffMenneskelig(fom, tom) {
   if (!moment(fom, 'YYYY-MM-DD').isValid() || !moment(tom, 'YYYY-MM-DD').isValid()) return false;
 
   const forskjellManeder = Math.floor(datoDiff(fom, tom, 'months'));
@@ -130,7 +135,7 @@ function datoDiffMenneskelig (fom, tom) {
     (`${forskjellManeder} ${manedBenevnelse}`);
 }
 
-function beregnAlder (foedselsdato) {
+function beregnAlder(foedselsdato) {
   return moment().diff(foedselsdato, 'years');
 }
 
@@ -141,6 +146,7 @@ export {
   formatterDatoTilISO,
   formatterKortDatoTilNorsk,
   datoDiff,
+  datoDiffPure,
   datoDiffMenneskelig,
   beregnAlder,
   erGyldigPeriode,
