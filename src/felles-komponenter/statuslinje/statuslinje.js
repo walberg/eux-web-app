@@ -17,7 +17,7 @@ const StatusLinje = ({
 }) => {
   if (['NOT_STARTED', 'PENDING'].includes(status)) { return null; }
 
-  const type = status === 'OK' ? 'suksess' : 'stopp';
+  const type = status === 'OK' ? 'suksess' : 'feil';
   const urlLenke = rinaURL ? <Nav.Lenke href={rinaURL} target="_blank" className="vedlegg__lenke">Gå direkte til Rina.</Nav.Lenke> : null;
   const messageOK = routePath ? <Link to={routePath}>{tittel}</Link> : <span>{tittel}</span>;
   const statusTekst = status === 'OK' ? <div>{messageOK} er opprettet. &nbsp; {urlLenke}</div> : `${tittel} ${undertittelFraStatus(status)}`;
