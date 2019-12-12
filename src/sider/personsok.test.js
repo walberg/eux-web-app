@@ -9,7 +9,6 @@ import mockData from '../../test/personsokMockData';
 import PersonSok from './personsok';
 import * as Skjema from '../felles-komponenter/skjema';
 import * as Nav from '../utils/navFrontend';
-import { StatusLinje } from '../felles-komponenter/statuslinje';
 import { PersonKort } from '../komponenter';
 
 const initialStore = createStore();
@@ -84,17 +83,11 @@ describe(('Opprettsak Test Suite'), () => {
       await wrapper.update();
       expect(personSok).toHaveBeenCalledTimes(1);
     });
-    it('StatusLinje vises ved errdata.status og har riktige props', () => {
-      wrapper.setProps({ errdata: { status: 'error' }, status: 'STATUS' });
-      const component = wrapper.find(StatusLinje);
+    it('Nav.AlertStripe vises ved feil og har riktige props', () => {
+      wrapper.setProps({ errdata: { status: 'error' }, status: 'ERROR' });
+      const component = wrapper.find(Nav.AlertStripe);
       expect(component).toHaveLength(1);
-      expect(component.props()).toHaveProperty('status', 'STATUS');
-    });
-    it('p vises ved errdata.status og viser errdata.message', () => {
-      wrapper.setProps({ errdata: { status: 'error', message: 'message' }, status: 'STATUS' });
-      const component = wrapper.find('p');
-      expect(component).toHaveLength(1);
-      expect(component.children().at(0).text()).toEqual('message');
+      expect(component.props()).toHaveProperty('type', 'feil');
     });
     it('viser PersonKort hvis fornavn && etternavn', () => {
       wrapper.setProps({ person: mockData.person });
