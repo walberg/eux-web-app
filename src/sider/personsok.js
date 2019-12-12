@@ -6,7 +6,6 @@ import * as MPT from '../proptypes/';
 import * as Nav from '../utils/navFrontend';
 import * as Skjema from '../felles-komponenter/skjema';
 import { PersonOperations, PersonSelectors } from '../ducks/person';
-import { StatusLinje } from '../felles-komponenter/statuslinje';
 import { PersonKort } from '../komponenter/';
 
 import './personsok.css';
@@ -56,10 +55,11 @@ class PersonSok extends Component {
           {['PENDING'].includes(status) ? <div className="personsok__spinnerwrapper"><Nav.NavFrontendSpinner type="S" /></div> : null}
           <Nav.Knapp className="personsok__knapp" onClick={sokEtterPerson} data-cy="personsok-knapp">SØK</Nav.Knapp>
         </div>
-        {this.state.sokeerror && <p>{this.state.sokeerror.message}</p>}
-        {errdata.status && <StatusLinje status={status} tittel="Fødselsnummer søket" />}
-        {errdata.status && <p>{errdata.message}</p>}
-        {personKort}
+        <Nav.Column xs="9">
+          {this.state.sokeerror && <p>{this.state.sokeerror.message}</p>}
+          {errdata.status && <Nav.AlertStripe type="feil">Brukeren du søker finnes ikke i TPS eller har en diskresjonskode.</Nav.AlertStripe>}
+          {personKort}
+        </Nav.Column>
       </div>
     );
   }
