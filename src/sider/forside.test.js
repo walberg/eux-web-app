@@ -14,7 +14,7 @@ describe(('Forside Test Suite'), () => {
   it('systemtittel vises en gang med riktig children', () => {
     const component = wrapper.find(Nav.Systemtittel);
     expect(component).toHaveLength(1);
-    expect(component.children().at(1).text()).toEqual('nESSI');
+    expect(component.children().at(1).text()).toEqual('nEESSI');
   });
   it('lenkepanel vises en gang og linker til korrekt path (/opprett)', () => {
     const component = wrapper.find({ href: '/opprett' });
