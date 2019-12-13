@@ -8,7 +8,7 @@ import mockData from '../../test/opprettsakMockData';
 import * as Api from '../services/api';
 import { OpprettSakJest } from './opprettsak';
 import * as Nav from '../utils/navFrontend';
-import { StatusLinje } from '../felles-komponenter/statuslinje';
+import { RinaSakStatuslinje } from '../felles-komponenter/rinaSakStatuslinje';
 import PersonSok from './personsok';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import { ArbeidsforholdController, BehandlingsTemaer, Fagsaker } from './sak';
@@ -19,6 +19,8 @@ const initialStore = createStore();
 const mockStore = configureStore([]);
 let store;
 let wrapper;
+
+const errdata = { err: 'error' };
 
 describe(('Opprettsak Test Suite'), () => {
   beforeEach(() => {
@@ -307,20 +309,20 @@ describe(('Opprettsak Test Suite'), () => {
       expect(typeof (component.props().onClick)).toEqual('function');
       expect(component.props()).toHaveProperty('aria-label', 'Navigasjonslink tilbake til forsiden');
     });
-    it('viser StatusLinje med props', () => {
-      wrapper.setProps({ opprettetSak: { rinasaksnummer: '6969', url: 'www.www.www' } });
-      const component = (wrapper.find(StatusLinje));
+    it('viser RinaSakStatuslinje med props', () => {
+      wrapper.setProps({ opprettetSak: { rinasaksnummer: '6969', url: 'www.www.www' }, status: 'OK' });
+      const component = (wrapper.find(RinaSakStatuslinje));
       expect(component).toHaveLength(1);
-      expect(component.props()).toHaveProperty('status', '');
+      expect(component.props()).toHaveProperty('status', 'OK');
       expect(component.props()).toHaveProperty('tittel', 'Saksnummer: 6969');
       expect(component.props()).toHaveProperty('rinaURL', 'www.www.www');
       expect(component.props()).toHaveProperty('routePath', '/vedlegg?rinasaksnummer=6969');
     });
-    it('viser errors', () => {
-      wrapper.setProps({ errdata: { status: 'krise', message: 'det brenner' } });
-      const component = (wrapper.find('p'));
+    it('viser RinaSakStatuslinje ved feil', () => {
+      wrapper.setProps({ opprettetSak: { rinasaksnummer: '6969', url: 'www.www.www' }, status: 'ERROR', errdata });
+      const component = (wrapper.find(RinaSakStatuslinje));
       expect(component).toHaveLength(1);
-      expect(component.children().text()).toEqual('det brenner');
+      expect(component.props()).toHaveProperty('errdata', errdata);
     });
   });
   describe('Avslutt Modal', () => {

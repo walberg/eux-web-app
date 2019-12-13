@@ -76,7 +76,7 @@ class AnnenRelatertTPSPerson extends Component {
     } else if (notFound400) {
       return (
         <Nav.Column xs="3">
-          <Nav.AlertStripe type="stopp">Ingen person med FNR {feiletSok} funnet</Nav.AlertStripe>
+          <Nav.AlertStripe type="feil">Ingen person med FNR {feiletSok} funnet</Nav.AlertStripe>
         </Nav.Column>
       );
     }

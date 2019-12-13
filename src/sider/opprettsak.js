@@ -15,7 +15,7 @@ import { KodeverkSelectors } from '../ducks/kodeverk';
 import { LandkoderOperations, LandkoderSelectors } from '../ducks/landkoder';
 import { RinasakOperations, RinasakSelectors } from '../ducks/rinasak';
 import { ServerinfoSelectors } from '../ducks/serverinfo';
-import { StatusLinje } from '../felles-komponenter/statuslinje';
+import { RinaSakStatuslinje } from '../felles-komponenter/rinaSakStatuslinje';
 import FamilieRelasjonsComponent from '../felles-komponenter/skjema/PersonOgFamilieRelasjoner';
 import PersonSok from './personsok';
 
@@ -161,6 +161,7 @@ export class OpprettSak extends Component {
     const erMottakerInstitusjonValgt = this.state.institusjonsID.length > 0;
     const erFagsakValgt = this.state.saksID.length > 0;
     const redigerbart = erFagomroedeValgt && erBUCValgt && erSEDValgt && erLandValgt && erMottakerInstitusjonValgt && erFagsakValgt;
+    const erSakSendt = status === 'OK' || status === 'ERROR';
 
     const oppgittFnrErValidert = (fnrErGyldig && fnrErSjekket);
     return (
@@ -256,8 +257,8 @@ export class OpprettSak extends Component {
             </Nav.Row>
             <Nav.Row>
               <Nav.Column xs="6">
-                <StatusLinje status={status} tittel={`Saksnummer: ${rinasaksnummer}`} rinaURL={responsLenke} routePath={vedleggRoute} />
-                {errdata && errdata.status && <p>{errdata.message}</p>}
+                {erSakSendt &&
+                  <RinaSakStatuslinje status={status} tittel={`Saksnummer: ${rinasaksnummer}`} rinaURL={responsLenke} routePath={vedleggRoute} errdata={errdata} />}
               </Nav.Column>
             </Nav.Row>
           </Nav.Container>
